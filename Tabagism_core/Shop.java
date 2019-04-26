@@ -1,6 +1,17 @@
-package Tabagism_core;
+package Tabagism/Tabagism_core;
 
+public class Shop extends Thread {
 
-public class Shop {
+    Semaphore sem;
+    String t_name;
 
+    public Shop(Semaphore s, String t) {
+        this.sem = s;
+        this.t_name = t;
+    }
+
+    @Override
+    public void run() {
+        //shop do stuff
+    }
 }

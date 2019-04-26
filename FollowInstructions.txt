@@ -1,0 +1,1151 @@
+ll
+javac -classpath /usr/local/share/java/gtk.jar Notifier.java 
+javac -classpath /usr/local/share/java/gtk-4.1.jar Notifier.java 
+javac -classpath $CLASSPATH:/usr/local/share/java/gtk-4.1.jar Notifier.java 
+javac -classpath $CLASSPATH:/usr/local/share/java/gtk-4.1.jar Notifier.java
+javac -classpath /usr/local/share/java/gtk-4.1.jar Main.java
+javac -classpath $CLASSPATH:/usr/local/share/java/gtk-4.1.jar Main.java
+nano Notifier.java
+rm Notifier.*
+java Notifier
+javac -classpath /usr/share/java/gtk.jar Notifier.java 
+java Notifier -classpath /usr/share/java/gtk-4.1.jar
+java -classpath /usr/share/java/gtk-4.1.jar Notifier
+javac -classpath /usr/share/java/gtk-4.1.jar Notifier.java 
+cd Notification/
+mkdir Notification
+cd ..
+nano Hello.java 
+javac -classpath /usr/share/java/gtk-4.1.jar Hello.java
+java Hello -classpath /usr/share/java/gtk-4.1.jar
+java -classpath /usr/share/java/gtk-4.1.jar Hello
+java Hello
+sudo update-alternatives --config javac
+file Hello.class 
+java hello
+java -client -ea -classpath /usr/share/java/gtk-4.1.jar Hello
+fg
+nano Hello.
+javac Hello.java -classpath /usr/share/java/gtk.jar 
+cd GUI_GTK/Hello_World/
+cd ../../Lince99/JAVA/
+nano build/faster
+nano Makefile 
+make demo
+nano README.markdown 
+make install
+sudo make install
+sudo make
+sudo apt-get install libnotify-dev 
+sudo apt-get install libnotify
+./configure compiler=javac runtime=java
+./configure
+sudo update-alternatives --config java 
+sudo update-alternatives --display java 
+javah
+make
+cd ../../Downloaded/java-gnome/
+sudo apt-get install openjdk-8-jdk
+javah -jni ddg.ndkTest.NativeLib
+nano README.md 
+mkdir Releases
+cd Tabagism_core/
+cd ../../Lince99/JTabagism/
+cd java-gnome/
+git clone git://github.com/afcowie/java-gnome.git 
+rm -rf Java-Gnome/
+cd ../../
+nano HACKING.markdown 
+./configure --help
+./configure 
+nano /usr/lib/jvm/default-java/include/jni.h 
+find /usr/ -name jni.h
+gcj
+./configure compiler=javac
+sudo apt-get install libenchant-dev 
+sudo apt-get install libgtksourceview-3.0-dev
+sudo apt-get install librsvg2-dev 
+sudo apt-get install junit
+cd java-gnome-4.1.3/
+tar xJf java-gnome-4.1.3.tar.xz 
+wget http://ftp.gnome.org/pub/gnome/sources/java-gnome/4.1/java-gnome-4.1.3.tar.xz
+cd Java-Gnome/
+mkdir Java-Gnome
+cd ../../../../Downloaded/
+ls /usr/share/java/
+nano Hello.java
+sudo apt-get install libjava-gnome-java 
+sudo apt-get install libjava-gnome-java-doc
+sudo apt-get install libjava-gnome-java
+sudo apt-get install libglade2-dev libgladeui-dev 
+sudo apt-get install libglade-java
+javac Hello.java 
+cd Hello_World/
+mkdir Hello_World
+cd GUI_GTK/
+mkdir GUI_GTK
+cd Repos/Lince99/JAVA/
+javac --version
+java --version
+java -v
+geany Tabagism_core/*
+cd ../../../JTabagism/
+geany Consumer.java Producer.java 
+java Consumer
+javac Consumer.java 
+java Producer
+javac Producer.java -Xlint:unchecked
+javac Producer.java 
+nano Consumer.java
+nano Producer.java
+cd ProduttoriConsumatori/
+mkdir ProduttoriConsumatori
+cd Thread/
+cd Tjh
+geany Tabagism_core/ &
+geany README.md 
+sudo apt-get install geany
+sudo apt autoremove
+geant README.md 
+htop
+cd Repos/Lince99/JTabagism/
+reboot
+cat /proc/sys/net/ipv6/conf/all/disable_ipv6
+sudo sysctl -p
+sudo nano /etc/sysctl.conf 
+nano /etc/sysctl.conf 
+net.ipv6.conf.all.disable_ipv6 = 1
+ip -a
+ip -s
+ip -d
+ip
+ip -
+ip 
+net -a
+git pull
+cd JAVA/
+git pull 
+cd JTabagism/
+cd Repos/Lince99/
+git push
+git commit -am "Fix undo and redo functionality"
+git add .
+nano askli_art.c 
+git diff
+cd Repos/Lince99/ASCIIGames/AskliArt/
+blueman-assistant 
+man blueman-services 
+man blueman-applet
+blueman-applet -h
+blueman-applet 
+sudo umount /mnt/*
+sudo umount /mnt/RASP_PART 
+sync
+umount /mnt/RASP_PART 
+sudo chmod +w RASP_PART/
+chmod +w RASP_PART/
+c d..
+kk
+sudo dolphin 
+mv * -r ../
+mv *.* -r ../
+man bsdtar
+sudo cp /home/lynx/Scaricati/NOOBS_v3_0_1/ -r .
+cp /home/lynx/Scaricati/NOOBS_v3_0_1/ -r .
+cp /home/lynx/Scaricati/NOOBS_v3_0_1/
+cd RASP_PART/
+sudo mount /dev/sdb1 /mnt/RASP_PART/
+sudo mkdir RASP_PART
+mkdir RASP_PART
+mount /dev/sdb1 /mnt
+/mnt/
+lsblk
+cd ARCH_RASPI3/
+cd Scaricati/
+sudo -s
+mount /dev/sdb1 boot
+mkdir boot
+cd ~
+sudo mkfs.vfat /dev/sdb1
+mkfs.vfat /dev/sdb1
+sudo fdisk /dev/sdb
+fdisk /dev/sdb
+fdisk
+photorec
+sudo apt-get install testdisk
+nano fish_prompt.fish 
+fish_logo
+nano fish_greeting.fish 
+cd functions/
+nano omf.fish 
+cd conf.d/
+nano fishd.lynx-slave 
+cd .config/fish/
+cat ~/.config/fish/config.fish
+help
+ssh 127.0.0.1
+ssh
+whereis config.fish
+echo -n foo
+echo a
+echo a;
+git commit -am "Add dependencies and configuration section to README"
+git clone https://www.github.com/Lince99/JTabagism.git
+kate askli_art.c &
+man curl
+sh
+exit
+git pull --verbose 
+bastet 
+reset
+ls
+cd Steam/logs/
+cd Stea
+re
+sudo ciao
+git commit -am "Add selection feature to askliart"
+rm kate 
+nano kate 
+git diff > kate
+syncthing &
+make compile 
+git commit -am "Fix TUI wrong prints, fix shortcuts functionalities."
+atom ../AsciiArt/ &
+nano makefile 
+make 
+make clean
+rm *.txt*
+geany askli_art.c &
+gcc -ftime-report askli_art.c -o askli_art -lncurses
+gcc -ftime-report askli_art.c -o askli_art
+make compile
+l
+lsw --help
+lsw -h
+lsw 
+sudo tlp start
+tlp start
+tlp
+nano a.txt 
+./keyNames 
+cd Tests/
+cd ../../C99/CursesGraphic/AsciiArt/
+cd examples/
+funcsave -h
+alias
+funcsave l
+alias l='ls'
+clear
+fish -h
+fish
+nano shells
+tee --help 
+tee -h
+cd shells
+ll | grep shells
+cd /etc/
+whereis shells
+nano garbage.txt 
+nano mat.txt 
+nano examples/askli_art.txt 
+nano ciao.txt 
+reswet
+sudo apt-get autoremove 
+sudo apt-get autoclean 
+sudo apt-get upgrade
+sudo apt-get update
+git commit -am "Add load and save features, remove matrix test, Fix not saved msg on quit"
+terminfo
+man clear
+nano a.txt_q 
+rm *.txt
+nano alphanum.txt_q 
+cd AskliArt/
+atom AskliArt/
+make run 
+syncthing 
+cd .config/syncthing/
+whereis syncthing
+make run
+man fscanf
+nano ciao.txt_queue 
+make compile ù
+man fseek
+nano ciao.txt_
+kate AskliArt/askli_art.c 
+nano AskliArt/askli_art.c 
+nano AsciiArt/ascii_art.c 
+nano TicTacToe/makefile 
+nano TicTacToe/makefile ù
+nano RainboWhyNot/makefile 
+nano Mini64Adventure/mini64adv.c makefile 
+cd GameOfCells/
+rm rainbosw.txt_queue 
+rm rainbosw.txt
+nano rainbosw.txt_queue 
+rm ometto.txt 
+file ometto.txt 
+nano ometto.txt 
+sl
+git commit -am "Add save support (with ctrl+s)"
+cd ../
+make c
+rm bbbb.txt_queue 
+rm bbbb.txt
+rm aaa.txt_queue 
+rm aaa.txt 
+nano bbbb.txt_queue 
+nano bbbb.txt
+rm test.txt_queue 
+rm test.txt
+rm mountains.txt_queue 
+rm mountains.txt 
+nano mountains.txt 
+nano test.txt_queue 
+nano test.txt
+rm ciao\ gigi_queue.txt 
+rm ciao\ gigi 
+nano 'ciao gigi
+'
+rm test_curses_manager.c
+rm test_curses_manager
+gcc -o test_curses_manager test_curses_manager.c -lncurses
+cd include/
+./test_curses_manager 
+iao
+dsdds
+sddsd
+d
+sd
+gcc -o test_curses_manager test_curses_manager.c -lncuses
+gcc -o test_
+cd CursesGraphic/
+nano test_curses_manager.c
+kate AskliArt/ &
+git checkout dev
+git commit -am "Merge dev to master because there are too many diffs"
+git merge dev
+nano README.md
+git checkout master 
+man git merge
+git merge -am "Merge dev to master because there are too much diffs"
+cd ../ASCIIGames/
+cd Repos/Lince99/C99/
+git push -v
+git commit -am "AskliArt migrated from C99 (old AsciiArt)"
+git add AskliArt/
+nano CMakeLists.txt 
+mv ascii_art.c askli_art.c
+mv AsciiArt/ AskliArt
+nano AsciiArt/README.md 
+git diff origin/master origin/dev --stat
+man git diff
+git diff origin/master origin/dev
+sls
+cp AsciiArt/ ../../ASCIIGames/ -r
+git commit -vam "Add simple documentation, migrate to ASCIIGames repo"
+nano ascii_art.c 
+askli
+ascli
+cat TicTacToe/README.md 
+nano TicTacToe/README.md 
+nano TicTacToe/tictactoe.c
+cd AsciiArt/
+nano TODO.txt 
+cd ASCIIGames/
+cd ../../../
+git pull -v
+git commit -am "Add border color to notify state, READY TO RELEASE"
+cd ../..
+nano include/curses_manager.h 
+man wattron
+cd Repos/Lince99/C99/CursesGraphic/AsciiArt/
+git commit -am "Fix code logic blocks positions, Fix CLEAR option, Add more shortcuts, TODO file r/w"
+cd C99/
+man mvwgetch
+man 3 string
+man wclear
+man wgetstr 
+geany ../AsciiArt/include/ascii_matrix.h  &
+geany ../AsciiArt/include/queue_char.h &
+geany ../AsciiArt/include/queue_char.h   &
+geany ../AsciiArt/ascii_art.c  &
+geany ../AsciiArt/ &
+man 3 raw
+man 3 nonl
+man 3 nl
+cd ../Tests/
+cat ../../../ASCIIGames/GameOfCells/makefile 
+nano ../../../ASCIIGames/GameOfCells/makefile 
+nano ../../Data_Structures/makefile 
+atom ../AsciiArt/
+cp .bashrc SparkleShare/github.com/MyData/bashrc_Lince99
+ld
+kate ascii_art.c &
+nano include/ascii_matrix.h 
+man 3 free
+man git fetch
+man git fetcj
+git fetch origin
+git fetch origin/dev
+maje
+gcc -o keyNames keyNames.c -lncurses
+cd ../Input_test/
+man curses 
+man ncurses 
+nano include/queue_char.h 
+kate ascii_art.c
+htop --user lynx
+ls --human-readable --size 
+ls --human-readable -l
+ls --human-readable 
+fish_update_completions 
+syncthing --help
+cd Sync/
+rm SyncthingGTK-0.9.4.3-x86_64.AppImage 
+./SyncthingGTK-0.9.4.3-x86_64.AppImage 
+claer
+pip install Conosci\ i\ principali\ diritti\ previsti\ dal\ Regolamento\ UE\ 2016\ 679.pdf
+pip install cario
+pip install pygobject
+sudo apt-get install pkg-config
+pkg-config
+chmod +x SyncthingGTK-0.9.4.3-x86_64.AppImage 
+cd ~/Scaricati/
+sudo apt-get install gtk3.8
+sudo apt-get install gtk
+sudo apt-get install GTK
+sudo apt-get install pyGObject
+sudo apt-get install python2.7
+sudo apt-get install gir1.2-rsvg-2.0 
+sudo apt-get install gir1.2-notify-0.7 
+sudo apt-get install python-gir1.2-notify
+sudo apt-get install python-gi-cairo
+pip install python-gi-cairo
+pip install psmisc
+pip install python-bcrypt
+pip install python-dateutil
+pip install setuptools
+sudo apt-get install python-pip
+sudo apt-get install psmisc 
+sudo apt-get install setuptools
+sudo apt-get install syncthing
+man man
+nano ~/.config/fish/functions/fish_greeting.fish
+omf install fish_logo 
+omf install fonts
+omf install lambda
+nano ../Tests/bounceTestCurses.c 
+nano ../Tests/printColors.c 
+nano ../Tests/variousCurses.c 
+nano ../Input_test/input_test.c
+nano ../Input_test/input_test.
+cd Repos/Lince99/C99/CursesGraphic/
+man bastet 
+sudo apt-get install bastet
+whereis tetris
+cd Games/
+libreoffice Risorgimento_Italia_Andoniu_Basso.odt &
+cd Documenti/
+man noraw
+git commit -am "Fix matrix resize and first version of ascii_art ready to release"
+man mvwgetnstr
+rm include/test_matrix
+snap list
+snap
+./test_matrix 
+gcc -o test_matrix test_matrix.c -lncurses
+s
+sudo ./SyncthingGTK-0.9.4.3-x86_64.AppImage 
+sudo snap remove syncthing 
+nano include/test_matrix.c
+gcc -o test_matrix test_matrix.c
+cd AsciiArt/include/
+lsd
+nano ~/.bashrc
+atom AsciiArt/
+sudo snap install syncthing
+./SyncthingGTK-0.9.4.3-x86_64.AppImage &
+man realloc
+rm test_matrix
+strip test_matrix
+nano test_matrix.c
+gcc -o test_matrix test_matrix.c 
+resetreset
+atom AsciiArt/ &
+man pipe
+man malloc
+cd C99/CursesGraphic/
+sudo apt-get update --fix-missing
+apt-get update
+git commit -am "Add matrix save to AsciiArt"
+nano ascii_art.c
+nano ascii_art
+man intrflush
+man initrflush
+man 3 getstr
+man 3 wmove
+man curses
+man wgets
+man ftell
+man fgetc
+man fget
+man fgetch
+man getch
+rese
+sudo rm -rf /timeshift/
+rm -rf /timeshift/
+sudo apt remove timeshift 
+packettracer 
+k
+sudo rm -rf 2019-04-07_23-00-01/
+cd snapshots/
+cd /timeshift/
+sudo timeshift -h
+sudo timeshift --h
+du -sh /timeshift/
+sudo service dnsmasq restart
+sudo nano /etc/dnsmasq.conf 
+whereis dnsmasq.conf
+du
+df
+cd /timeshift/snapshots/
+timeshift --list
+timeshift --check
+timeshift -h
+sudo apt-get install btrfs-tools 
+sudo apt-get dist-upgrade 
+neofetch 
+sudo dpkg --list 'linux-image*'
+du -sh ~/.cache/thumbnails/
+sudo apt autoremove 
+sudo apt autoclean 
+sudo du -sh /var/cache/apt
+sudo apt-get install timeshift
+sudo apt-add-repository -y ppa:teejee2008/ppa
+timeshift
+sudo apt-get install dnsmasq
+sudo apt-get install preload 
+preload
+sudo nano /etc/default/grub
+sudo nano /etc/default/grub &
+sudo kate /etc/default/grub &
+sudo thermald -h
+sudo thermald 
+thermald 
+sudo tlp stat
+sudo tlp bat
+stea,
+git commit -am "Fix cursor move in AsciiArt, add clear option in AsciiArt"
+/home/lynx/Repos/Lince99
+d 
+man inch
+man calloc
+man callc
+kate include/ascii_matrix.h &
+kate &
+ls include/
+man calloc c
+cd AS
+atom Aas
+man git-gc
+man git
+kate client.c server.c &
+kate makefile 
+cd Network/
+cd Code_styler/
+sudo apt-get install boot
+systemd-analyze
+cd C0
+firefoxreset
+man  firefox
+makereset
+git commit -am "Add arrow management to gameofcells, Fix readme dependancies guide"
+cd Repos/Lince99/ASCIIGames/
+kate gameofcells.c &
+kate gameofcells.c 
+nano gameofcells.c 
+nano include/window_manager.h 
+nano include/goc_game_api/array_rules.h 
+nano include/goc_game_api/matrix_cell.h 
+cat /etc/resolv.conf 
+vim gameofcells.c 
+emacs
+joe
+vim a
+sudo nano /usr/share/vim/vimrc
+nano /usr/share/vim/vimrc
+info vim
+vim help
+help vim
+cd Repos/Lince99/ASCIIGames/GameOfCells/
+gvim
+man vim
+man 3 has_colors
+man 3 printw
+eset
+cat ascii_art.c
+nano ../../C99/CursesGraphic/AsciiArt/include/curses_manager.h 
+nano ../../C99/CursesGraphic/AsciiArt/ascii_art.c
+man wmove
+man mvwmove
+man mvmove
+man mvwprintw
+man mvwprint
+ks+
+man 3 scroll
+man 3 curses
+man 3 COL
+git log
+cd ../../../Code_styler/
+man 3 threads
+man 3 curses_variables 
+man 3 wrefresh 
+man 3CURSES wrefresh 
+man 3 ncurses
+man tar
+man gzip
+man 3 getbegx
+man 3 getmaxyx
+man 3 outopts 
+kwin -h
+kwin
+sudo apt-get install steam
+sudo apt install audacity
+sudo apt install dnsmasq
+sudo aptitude-curses
+sudo aptitude-curses why
+sudo aptitude-curses 
+whoopsie --help
+whoopsie -h
+man whoopsie
+nano include/goc_net_api/goc_server.h 
+nano include/goc_net_api/goc_client.h 
+nan
+shutdown -h now
+git commit -am "Add todo list and fix order to README.md"
+kate README.md &
+git branch
+tree
+git reflog 
+git clone https://www.github.com/Lince99/ASCIIGames.git
+rm -rf ASCIIGames/
+kate README.md 
+nano include/GOC_api/server.h 
+nano include/GOC_api/client.h 
+git diff origin/dev
+journalctl -h
+journalctl -b
+journalctl 
+atom README.md &
+cd ASCIIGames/GameOfCells/
+nano server.c 
+man swab
+man memset
+./byteorder 
+gcc -o byteorder byteorder.c
+nano byteorder.c
+nano server.c
+cd ClientServer/
+mkdir ClientServer
+cd TESTS/
+atom GameOfCells/ &
+cd Mini64Adventure/
+wget -q https://download.opensuse.org/repositories/home:/strycore/xUbuntu_18.04/Release.key -O- | sudo apt-key add -
+git describe 
+sudo lshw | less -Cqrs
+sudo lshw
+sudo lshw | grep amd
+sudo lshw | grep gpu
+sudo lshw | grep video
+lshw | grep video
+sudo -i
+sudo apt-get install aptitude
+sudo dpkg --configure -a
+sudo gpg -a --export 2F7F0DA5FD5B64B9 | sudo apt-key add -
+sudo gpg -a --export 2F7F0DA5FD5B64B9 | apt-key add -
+sudo gpg --fingerprint 2F7F0DA5FD5B64B9
+gpg -a --export 2F7F0DA5FD5B64B9 | apt-key add -
+gpg -a --export 7D8D0BF6 | apt-key add -
+gpg --fingerprint 2F7F0DA5FD5B64B9
+gpg --keyserver hkp://keys.gnupg.net --recv-key 2F7F0DA5FD5B64B9
+gpg --keyserver hkp://keys.gnupg.net --recv-key 7D8D0BF6
+sudo apt-key adv --recv-keys --keyserver keys.gnupg.net 2F7F0DA5FD5B64B9
+sudo rm -r /var/lib/apt/lists/*
+sudo apt-key adv --recv-keys --keyserver keyserver.ubuntu.com EXPKEYSIG 2F7F0DA5FD5B64B9
+sudo apt-key adv --recv-keys --keyserver keyserver.ubuntu.com 2F7F0DA5FD5B64B9
+sudo apt-get update 
+sudo rm -r /var/lib/apt/lists/* -vf
+sudo apt-key adv --recv-keys --keyserver keyserver.ubuntu.com 40976EAF437D05B5
+sudo apt edit-sources 
+apt edit-sources 
+apt showsrc 
+apt check /etc/apt/trusted.gpg
+apt /etc/apt/trusted.gpg
+nano /etc/apt/trusted.gpg
+apt-key list 
+sudo apt-get check
+sudo apt-get purge
+mkusb
+sudo apt install --install-recommends mkusb mkusb-nox usb-pack-efi
+sudo add-apt-repository ppa:mkusb/ppa
+atom Graph/ &
+cd Strutture/
+git commit -am "Add pseudocode for bfs and dfs"
+cd Graph/
+atom Graph/
+nano graph.c
+cd Lince99/
+cd T
+cd TodoIST/
+cd Strutture_dati/
+cd Personal/
+ks
+git status
+git commit -am "Fix makefile errors and renaming stuff"
+git add .ù
+dolphin GameOfCells/
+git pul
+rm RainboWhyNot/rainbooows
+cd /home/lynx/Repos/Lynx
+mv Lynx/ Lince99
+cd Repos/Lynx/
+dolphin GameOfCells/ &
+git commit -am "Fix CTRL management in Ascii_art and add undo/redo system"
+cd PROJECTS/GOF/
+git clean -f -d
+git reset --hard
+cd PROJECTS/
+git merge -f
+git merge --force
+git merge
+git stash
+man git stash
+git reset --merge
+git help pull
+git pull --force
+git commit -am "Add xml struct"
+git diff dev origin/dev
+git diff dev 
+cd Repos/Lynx/C99/CursesGraphic/AsciiArt/
+man nodelay
+nano ../../../ASCIIGames/TicTacToe/tictactoe.c
+nano ../../../TESTS/GOF/game_of_life.c
+nano ../Pong/pong.c
+nano ../Menu_matrix/menu_matrix.c 
+nano ../Menu_matrix/
+nano ../Menu/menu.c 
+nano ../ArrowManage/arrows.c 
+man wgetch
+man delwin
+nano ../AsciiArt/ascii_art.c
+cd ../AsciiArt/
+nano getCtrlKey.c
+man nonl
+nano keyNames.c
+nano keyNames.c 
+cp getCtrlKey.c keyNames.c
+./getCtrlKey 
+gcc -o getCtrlKey getCtrlKey.c -lncurses
+cd ..ù
+sudo lshw 
+lshw | video
+nano RainboWhyNot/rainbooows.c
+nano GameOfCells/Game_of_cells.c 
+cd Repos/Lynx/ASCIIGames/
+mv Tema_Locandiera.odt Bozza_Tema_Locandiera.odt
+rm Tema_Locandiera.txt 
+mv Tema_unito.odt Tema_Locandiera_Unito.odt
+libreoffice Tema_Locandiera.odt 
+mae
+makwe
+ty
+man 3 beep
+man 
+man 3 chtypeù
+man keyok
+man define_key
+man cbreak
+man wtech
+cd GOF/
+cd Lynx/TESTS/
+cd Lynx/
+man 3 iostream
+man iostream
+atom TodoIST/ &
+./rainbooows 10 5 50
+./rainbooows 5 5 50
+cd Repos/Lynx/ASCIIGames/RainboWhyNot/
+git commit -am "Add Ascii art draw program"
+nano AsciiArt/
+cd ../../../Personal/TESTS/Code_styler_TEST/lib/
+nano xml_tree_struct.h 
+mv input_test.c ascii_art.c
+rm input_test
+cp -r Input_test/ AsciiArt
+nano input_test.c
+nano input_test
+cd Input_test/
+cd Repos/Lynx/C99/
+cd ../../../C99/CursesGraphic/Pong/
+nano game_of_life.c 
+make clean_reset 
+nano game_of_life.c
+cd Repos/Lynx/Personal/PROJECTS/
+cd Repos/Lynx/Personal/PROJECTS/GOF/
+git commit -am "Add Game of Life on CLI (simple) and Remove old copy of Code_styler"
+cd ../../Personal/
+,a
+man 3 random
+man 3 rand
+mv stack.c stack.h
+nano stack.c
+sudo apt-get install adb
+adb game_of_life
+kate game_of_life.c &
+kate game_of_life.c
+cp ../../../Personal/TESTS/Code_styler_TEST/lib/colors.h . 
+cp ../../../Personal/TESTS/Code_styler_TEST/lib/colors.h 
+mkdir include
+cp makefile GOF/
+mkdir GOF
+nano
+cp ASCIIGames/TicTacToe/makefile TESTS/
+mkdir TESTS
+cd .
+kate xml_tree_struct.h &
+cd lib/
+kate checker.c
+cd ../../Personal/TESTS/Code_styler_TEST/lib/
+nano colors.h 
+git commit -am "Add TicTacToe game and TODO finish it"
+cd ../../ASCIIGames/TicTacToe/
+sudo apt-get install ncurses-doc 
+sudo apt-get install ncurses-base 
+sudo apt-get install libncurses5
+lscd C99/CursesGraphic/
+atom C99/CursesGraphic/Pong/pong.c
+cp makefile TicTacToe/
+cp ../Code_styler/makefile .
+cp ../TodoIST/makefile .
+cp ../Personal/TESTS/Code_styler_TEST/makefile .
+cp ../Personal/TESTS/Code_styler_TEST/ .
+cp ../Personal/TESTS/Rainbow_TEST/makefile .
+cp ../C99/CursesGraphic/Pong/makefile .
+atom TicTacToe/ &
+cp RainboWhyNot/* TicTacToe/ -r
+cp RainboWhyNot/* TicTacToe/
+mkdir TicTacToe
+cd Repos/Lynx/C
+sudo apt-get install ncurses-*
+sudo apt-get install ncurses-bin
+man wrefresh 
+man wgetnstr 
+cd TicTacToe/
+nano RainboWhyNot/rainbooows.c 
+cd ../../../ASCIIGames/
+./pong 
+cd Pong/
+python
+atom xml_tree_struct.h 
+cd ../Personal/TESTS/Code_styler_TEST/lib/
+flatpak install flathub org.sparkleshare.SparkleShare
+sudo apt-get install smartmontools
+tlp stat
+man tlp
+tlp --help
+sudo apt-get install tlp tlp-rdw 
+sudo tlp recalibrate
+sudo apt-get install tp-smapi-dkms acpi-call-dkms
+sudo tlp recalibrate 
+tlp recalibrate 
+tlp -h
+sudo apt-get install tlp tlp-rdw
+git commit -am "Add contest exercises"
+cd Repos/Lynx/Personal/
+lx
+sudo apt-get upgrade 
+sudo apt-get install budgie-desktop
+sudo apt-add-repository ppa:tycho-s/ppa
+sudo add-apt-repository ppa:budgie-remix/ppa
+sudo apt-get install xfce4-goodies
+sudo apt-get install xubuntu-desktop
+sudo apt-get install xfce
+sudo apt remove i3
+sudo apt-get install awesome
+ifconfig 
+find ./ "*i3*"
+rm -rf i3/
+cd .config/
+man 3 strftime 
+cd Antivirus/
+rm makefile 
+cp makefile Antivirus/
+cp makefile X-Ray/
+cp makefile Party/
+mkdir Antivirus
+mkdir X-Ray
+mkdir Party
+nano makefile
+cd REPLY_CHALLENGES_2019/
+mkdir REPLY_CHALLENGES_2019
+cd Pr
+cd Repos/
+sudo apt-get install i3
+sudo apt-get install lxde
+hrop
+htpè
+sudo balooctl disable
+./rainbooows 50 3 19
+./rainbooows 50 2 18
+./rainbooows 50 2 17
+./rainbooows 50 2 15
+./rainbooows 50 2 20
+./rainbooows 50 2 22
+./rainbooows 50 2 24
+./rainbooows 50 2 25
+./rainbooows 50 2 30
+./rainbooows 55 2 30
+./rainbooows 55 3 30
+./rainbooows 55 3 35
+./rainbooows 55 3 40
+./rainbooows 50 2 40
+./rainbooows 50 2 60
+./rainbooows 50 2 55
+./rainbooows 50 2 50
+./rainbooows 50 1 50
+./rainbooows 50 5 50
+./rainbooows 40 4 40
+./rainbooows 40 4 60
+./rainbooows 40 5 60
+./rainbooows 25 5 60
+./rainbooows 25 5 100
+./rainbooows 10 5 100
+cd Rainbow_TEST/
+geany Code_styler/ &
+./rainbooows 100 10 5
+./rainbooows 10 10 5
+./rainbooows 10 5 5
+./rainbooows 63 2 4.5
+./rainbooows 63 2 4c
+nano rainbooows.c
+nano include/colors.h 
+./rainbooows 63 2 4
+./rainbooows 63 2 45
+./rainbooows 50 20 5
+./rainbooows 50 20 1
+./rainbooows 5 2 9
+./rainbooows 8 7 2
+cd ../Repos/Lynx/Personal/TESTS/Rainbow_TEST/
+find . -name "Tema_Locandiera.odt"
+find . -name "Locandiera.odt"
+find -name "Locandiera.odt" /home/
+find --name "Locandiera.odt" /home/
+info find
+man find
+rm .xsession-errors 
+nano .xsession-errors 
+git commit -am "TODO fix usage of g_struct lib in the entire program"
+nano tree_nary.h 
+nano g_struct.h 
+cd common/
+nano g_matrix_adj.h 
+nano g_bfs.h 
+nano graph.c 
+cd C99/Strutture/Graph/
+cd C
+git clone https://www.github.com/Lince99/Code_styler.git
+git clone https://www.github.com/Code_styler.git
+cd Strutture/Graph/
+git commit -e "Add graph structure"
+git help commit
+git help blame 
+git commit -am "Add graph structure"
+git commit -am "Add to"
+resetr
+git whatchanged 
+cd -
+nano styles/example_style.xml 
+cd ../../../Personal/TESTS/Code_styler_TEST/
+man pthread_create 
+man pthread
+cp ../../Personal/TESTS/Code_styler_TEST/makefile ../General_Libraries/makefile
+nano Graph/makefile 
+mv graph.c Graph/
+touch graph.c
+rm xml_*
+cp -r ../../../Personal/TESTS/Code_styler_TEST/lib .
+cp -r ../../../Personal/TESTS/Code_styler_TEST/lib/
+cp ../../../Personal/TESTS/Code_styler_TEST/makefile .
+cd Repos/Lynx/C99/Strutture/Graph
+mkdir Repos/Lynx/C99/Strutture/Graph
+mdkir Repos/Lynx/C99/Strutture/Graph
+nano /etc/nanorc 
+man talk
+sudo apt show talk
+talk
+man write
+write
+write lynx@lynx-desktop
+ping 192.168.1.8
+putty &
+rm bashrc.txt 
+rm nanorc.txt 
+mv nanorc nanorc.txt
+mv bashrc.md bashrc.txt
+mv bashrc bashrc.md
+cat nanorc 
+cat bashrc 
+ssh lynx@192.168.1.
+scp bashrc lynx@192.168.1.8:~/Scaricati/
+scp bashrc lynx@lynx-AB350-Gaming:~/Scaricati/
+sftp
+sftp 
+cat .bashrc > Documenti/bashrc
+cat /etc/nanorc > Documenti/nanorc
+whereis "nanorc"
+whereis "nano.rc"
+whereis nano.rc
+nano .directory 
+rm net.lutris.battlenet-439.desktop 
+rm Battle.net.desktop 
+rm test.txt 
+nano test.txt 
+cd ~/Scrivania/
+git commit -am "Fix library dependencies and add rules struct"
+nano lib/xml_tree_struct.h 
+cd Code_styler_TEST/
+atom Code_styler_TEST/
+find -name *Battle*
+find --name *Battle*
+whereis Battle
+òò
+cd Scrivania/
+sudo apt-get install libgnutls30:i386 libldap-2.4-2:i386 libgpg-error0:i386 libsqlite3-0:i386
+sudo apt-get install libvulkan1:i386
+sudo apt-get install libvulkan1
+lspci -k | grep *graphic*
+lspci -k | grep "graphic"
+lspci -k | graphic
+lspci -k
+glxinfo | grep "OpenGL version"
+glxinfo | grep "OpenGL versiov"
+glxdemo &
+man string
+git commit -am "Add several functions to xml tree"
+man strcasecmp
+man strncmp
+nano lib/xml_rules.h 
+make compile_optimize 
+cat out_tree.txt 
+make run > out_tree.txt
+nano out_tree.txt 
+rm out_tree.txt 
+make > out_tree.txt
+make all_opt
+cd Repos/Lynx/Personal/TESTS/
+balooctl 
+balooctl stop
+balooctl monitor
+balooctl help
+nano AlberoBinario.java
+nano AlberoBinario.
+cd Repos/Lynx/JAVA/Strutture_dati/Alberi/
+balooctl config
+balooctl indexSize
+balooctl start
+balooctl status
+balooctl restart
+balooctl clear
+baloo_file -h
+whereis baloo
+whereis balooo
+cd lynx/
+cd /home/
+baloo_file
+man baloo
+sudo snap remove lsd
+sudo snap uninstall lsd
+sudo snap install lsd
+./qtcreator
+nano makefile_new 
+nano gcc_optimizers.txt 
+gcc --help=optimizers > gcc_optimizers.txt
+g++ --help=optimizers > g++_optimizers.txt
+g++ --help optimizers > g++_optimizers.txt
+nano g++_optimizers.txt 
+nano g_optimizers.txt 
+gcc --help optimizers > gcc_optimizers.txt
+g++ --help optimizers
+g++ --help optimizers | less
+make compile_info 
+make compile_timer 
+atom makefile 
+make compile_debug 
+make compile_timer
+cd ~/Repos/Lynx/Personal/TESTS/Code_styler_TEST/
+cp MaintenanceTool.new MaintenanceTool
+man g++
+./qt-unified-linux-x64-3.0.6-online.run &
+nano checker.c 
+nano checker
+cd Repos/Lynx/Personal/TESTS/Code_styler_TEST/
+chmod +x qt-unified-linux-x64-3.0.6-online.run 
+make run_less 
+sudo fsck /dev/sdb1
+man fsck
+fsck
+lsusb
+nano micro_example_style.xml 
+cd styles/
+sudo dd if=/dev/zero of=/dev/sdb status=progress
+dd if=/dev/zero of=/dev/sdb status=progress
+dd if=/dev/zero of=/dev/sdb status=progess
+man shred
+make | less
+man time
+make cron_time 
+man strip
+time make compile
+man gcc
+cat /dev/
+time g++ -o checker checker.c
+time ./checker 
+./checker 
+g++ -o checker checker.c
+time make run
+atom
+nano styles/small_example_style.xml 
+curl https://api.teletype.atom.io/ice-servers
+ping api.teletype.atom.io
+ping api.teletype.atom.io/ice-servers
+ping https://api.teletype.atom.io/ice-servers
+df list *plasma*
+df list *plasma
+dnf list *plasma
+rm Code_styler_TEST/lib/json_tree.h 
+nano Code_styler_TEST/lib/json_tree.h 
+git branch 
+man memcpy
+ping 1.1.1.1
+man qt
+qtconfig 
+qtqt
+sudo apt-get install inkscape
+atom README.md 
+cd Repos/Lynx/TodoIST/
+git push -u origin json
+git commit -am "Add json branch only for WIP code styler reading rules from json"
+cd ../../../..
+cat small_example_style.json 
+cd Repos/Lynx/Personal/TESTS/Code_styler_TEST/styles/
+cd atom/
+cd snap/
+git checkout json
+git branch json
+cp -r lib_xml/ lib
+mv OLD_extract_tags.h extract_tags.h
+mv extract_tags.h old_extract_tags.h 
+cp old_extract_tags.h OLD_extract_tags.h 
+cd K_tree_TEST/
+cd Personal/TESTS/

@@ -1,5 +1,20 @@
-package Tabagism_core;
+package Tabagism/Tabagism_core;
 
-public class Smoker {
-    
+import java.util.
+
+public class Smoker extends Thread {
+
+    Shop tabacchino;
+
+    public Smoker(Shop s) {
+        tabacchino = s;
+    }
+
+    @Override
+    public void run() {
+        try {
+        } catch(InterruptedException ie) {
+            ie.printStackTrace();
+        }
+    }
 }
