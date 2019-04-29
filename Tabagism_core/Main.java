@@ -5,15 +5,14 @@ public class Main {
     private
 
     public static void main(String[] args) {
-        int n_fumatori;
-        int max_timeout;
-        Resource risorse[4];
-        Semaphore sem = new Semaphore(2);
+        int n_fumatori = 4;
+        int max_timeout = 10;
+        Component risorse[4];
 
-        risorse[0] = new Risorse("Tabacco");
-        risorse[1] = new Risorse("Cartina");
-        risorse[2] = new Risorse("Filtro");
-        risorse[3] = new Risorse("Accendino");
+        risorse[0] = new Component("Tabacco", 100000);
+        risorse[1] = new Component("Cartina", 1000);
+        risorse[2] = new Component("Filtro", 1000);
+        risorse[3] = new Component("Accendino", 100);
 
         Shop tabacchino = new Shop(sem, "tbc");
     }

@@ -89,6 +89,11 @@ Il Monitor vi terra' aggiornato sullo stato del programma:
 **E' possibile scaricare il programma tramite jar**:
 - TODO ADD LINK TO RELEASE
 
+Per avviarlo via terminale basta digitare il seguente comando:
+```bash
+java -jar Jtabagism.jar
+```
+
 ---
 
 ##Compilazione

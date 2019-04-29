@@ -1,6 +1,6 @@
 package Tabagism/Tabagism_core;
 
-import java.util.
+import java.util.concurrent.Semaphore;
 
 public class Smoker extends Thread {
 
