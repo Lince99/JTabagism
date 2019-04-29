@@ -104,40 +104,34 @@ TODO
 
 Usare i seguenti comandi per installare le dipendenze:
 
-<code>
-sudo apt-get install libnotify-dev
-sudo apt-get install openjdk-8-jdk
-sudo apt-get install libenchant-dev 
-sudo apt-get install libgtksourceview-3.0-dev
-sudo apt-get install librsvg2-dev 
-sudo apt-get install junit
-sudo apt-get install libglade2-dev libgladeui-dev 
-</code>
+```bash
+sudo apt-get install libnotify-dev openjdk-8-jdk libenchant-dev libgtksourceview-3.0-dev librsvg2-dev junit libglade2-dev libgladeui-dev 
+```
 
 Opzionale: se si possiede altre versioni di java impostare sia java che javac nella versione 8:
 
-<code>
+```bash
 sudo update-alternatives --config javac
 sudo update-alternatives --config java
-</code>
+```
 
 
 
 Per poi scaricare la liberia di compatibilita' tra gtk e java
 
-<code>
+```bash
 git clone git://github.com/afcowie/java-gnome.git 
 cd java-gnome
 sudo ./configure #or sudo ./configure compiler=javac runtime=java
 sudo make
 sudo make install
-</code>
+```
 
 
 E infine utilizzare i seguenti comandi per compilare da terminale il codice: (usare import org.gnome.gtk.* o gdk.* in base alle necessita')
 
-<code>
+```bash
 mdkir Release
 javac -classpath /usr/share/java/gtk-4.1.jar -d Release Main.java
 java -classpath /usr/share/java/gtk-4.1.jar Main
-</code>
+```
