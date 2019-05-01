@@ -1,0 +1,2 @@
+Main-Class: Tabagism.Tabagism_core.Main
+Class-Path: /usr/share/java/gtk-4.1.jar

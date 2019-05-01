@@ -1,4 +1,4 @@
-package Tabagism/Tabagism_core;
+package Tabagism.Tabagism_core;
 
 import java.util.concurrent.Semaphore;
 
@@ -10,12 +10,12 @@ public class Component {
     private int quantity;
     Semaphore mutex = new Semaphore(1);
 
-    public Resource(String t) {
+    public Component(String t) {
         this.type = t;
         this.quantity = 0;
     }
 
-    public Resource(String t, int q) {
+    public Component(String t, int q) {
         this.type = t;
         this.quantity = q;
     }
@@ -46,13 +46,13 @@ public class Component {
         } catch(InterruptedException mutex_e) {
             //print mutex error
         }
-        mutex.release;
+        mutex.release();
 
         return q;
     }
 
     //TODO CONVERT TO ARRAYLIST
-    public Component[] initComponentArr(int dim, String[] names, int[] q) {
+    /*public Component[] initComponentArr(int dim, String[] names, int[] q) {
         Component res[dim];
 
         for(int i = 0; i < dim; i++) {
@@ -60,5 +60,5 @@ public class Component {
         }
 
         return res;
-    }
+    }*/
 }

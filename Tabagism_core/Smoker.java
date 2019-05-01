@@ -1,4 +1,4 @@
-package Tabagism/Tabagism_core;
+package Tabagism.Tabagism_core;
 
 import java.util.concurrent.Semaphore;
 
@@ -12,9 +12,10 @@ public class Smoker extends Thread {
 
     @Override
     public void run() {
-        try {
+        /*try {
+
         } catch(InterruptedException ie) {
             ie.printStackTrace();
-        }
+        }*/
     }
 }

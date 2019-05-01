@@ -1,4 +1,4 @@
-package Tabagism/Tabagism_core;
+package Tabagism.Tabagism_core;
 
 public class Monitor {
 

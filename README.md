@@ -69,7 +69,7 @@ rifornire una risorsa.
 
 ---
 
-##Configurazione
+## Configurazione
 
 Inizialmente verranno richiesti i seguienti dati:
 - Numero di fumatori
@@ -84,10 +84,10 @@ Il Monitor vi terra' aggiornato sullo stato del programma:
     (controlla le risorse dopo _tot_ secondi)
 - Tramite un sistema di notify attivabile nelle impostazioni
 
-##Download
+## Download
 
-**E' possibile scaricare il programma tramite jar**:
-- TODO ADD LINK TO RELEASE
+**E' possibile scaricare il programma qui**:
+**[latest release](https://github.com/Lince99/JTabagism/Release/JTabagism.jar)**
 
 Per avviarlo via terminale basta digitare il seguente comando:
 ```bash
@@ -96,21 +96,21 @@ java -jar Jtabagism.jar
 
 ---
 
-##Compilazione
+## Compilazione
 
 Nel caso sia necessaria la compilazione del codice sorgente, di seguito potrete
 trovare i passaggi necessari all'esecuzione del programma:
-TODO
+TODO OH MY GOD HOW I DID THIS
 
-###Dipendenze
+### Dipendenze
 - Java
 - Gtk
-- Glava
+- Glade
 
 Usare i seguenti comandi per installare le dipendenze:
 
 ```bash
-sudo apt-get install libnotify-dev openjdk-8-jdk libenchant-dev libgtksourceview-3.0-dev librsvg2-dev junit libglade2-dev libgladeui-dev 
+sudo apt-get install libnotify-dev openjdk-8-jdk libenchant-dev libgtksourceview-3.0-dev librsvg2-dev junit libglade2-dev libgladeui-dev
 ```
 
 Opzionale: se si possiede altre versioni di java impostare sia java che javac nella versione 8:
@@ -121,11 +121,10 @@ sudo update-alternatives --config java
 ```
 
 
-
 Per poi scaricare la liberia di compatibilita' tra gtk e java
 
 ```bash
-git clone git://github.com/afcowie/java-gnome.git 
+git clone git://github.com/afcowie/java-gnome.git
 cd java-gnome
 sudo ./configure #or sudo ./configure compiler=javac runtime=java
 sudo make
@@ -133,10 +132,12 @@ sudo make install
 ```
 
 
-E infine utilizzare i seguenti comandi per compilare da terminale il codice: (usare import org.gnome.gtk.* o gdk.* in base alle necessita')
+E infine utilizzare i seguenti comandi per compilare da terminale i singoli codici sorgenti con gtk: (usare import org.gnome.gtk.* o gdk.* in base alle necessita')
 
 ```bash
 mdkir Release
 javac -classpath /usr/share/java/gtk-4.1.jar -d Release Main.java
+#javac -classpath /usr/local/share/java/gtk-4.1.jar -d Release Main.java
 java -classpath /usr/share/java/gtk-4.1.jar Main
+#java -classpath /usr/local/share/java/gtk-4.1.jar Main
 ```
