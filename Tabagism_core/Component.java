@@ -25,14 +25,21 @@ public class Component {
     }
 
     public void setQuantity(int q) {
-        this.quantity = q;
+        try {
+            mutex.acquire();
+            this.quantity = q;
+        } catch(InterruptedException mutex_e) {
+            //print mutex error
+        }
+        mutex.release();
+
     }
 
     public String getType() {
         return this.type;
     }
 
-    public synchronized int getQuantity() {
+    public int getQuantity() {
         int q = 0;
 
         //critical section
@@ -50,15 +57,4 @@ public class Component {
 
         return q;
     }
-
-    //TODO CONVERT TO ARRAYLIST
-    /*public Component[] initComponentArr(int dim, String[] names, int[] q) {
-        Component res[dim];
-
-        for(int i = 0; i < dim; i++) {
-            res[i] = new Component(names[i], q[i]);
-        }
-
-        return res;
-    }*/
 }
