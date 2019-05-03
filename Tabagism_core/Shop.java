@@ -28,7 +28,6 @@ public class Shop extends Thread {
             this.change_time = time;
     }
 
-    @Override
     public void run() {
         //Il tabacchino blocca le risorse condivise per prenderle tutte
 
