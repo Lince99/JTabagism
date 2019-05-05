@@ -1,6 +1,7 @@
 package Tabagism.Tabagism_core;
 
 import java.util.ArrayList;
+import java.util.concurrent.Semaphore;
 
 
 
@@ -18,6 +19,7 @@ public class Main {
         int check_q_tbc = 10000; //ogni 10 secondi controlla le risorse
         Shop tabacchino;
         ArrayList<Smoker> fumatori;
+        Semaphore lock_risorse = new Semaphore(1);
 
         //Setup iniziale
         n_fumatori = 4;
@@ -29,14 +31,25 @@ public class Main {
         risorse.add(new Component("Filtro", filtro_q));
         risorse.add(new Component("Accendino", accendino_q));
 
+        //Avvia il monitor
+
         //Crea il thread del tabacchino
-        tabacchino = new Shop(risorse, "tbc");
+        tabacchino = new Shop(risorse, "tbc", lock_risorse);
         tabacchino.setChange_time(check_q_tbc);
+        //tabacchino.printInfo();
+        //attende che il tabacchino inizi ad occupare le risorse
+        try {
+            Thread.sleep(100);
+        } catch(InterruptedException sleep_e) {
+            sleep_e.printStackTrace();
+        }
 
         //Crea i thread dei fumatori
         fumatori = new ArrayList<Smoker>();
         for(int i = 0; i < n_fumatori; i++) {
-            fumatori.add(new Smoker(risorse, max_smoke_time));
+            fumatori.add(new Smoker(risorse, "smc#"+i, max_smoke_time, lock_risorse));
+            //fumatori.get(i).printInfo();
         }
+
     }
 }

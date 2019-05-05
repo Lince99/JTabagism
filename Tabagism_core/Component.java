@@ -25,14 +25,16 @@ public class Component {
     }
 
     public void setQuantity(int q) {
+        if(q <= 0)
+            return;
         try {
             mutex.acquire();
             this.quantity = q;
         } catch(InterruptedException mutex_e) {
             //print mutex error
+            mutex_e.printStackTrace();
         }
         mutex.release();
-
     }
 
     public String getType() {
@@ -40,21 +42,47 @@ public class Component {
     }
 
     public int getQuantity() {
+        return this.quantity;
+    }
+
+    public int reduceQuantity(int times) {
         int q = 0;
 
         //critical section
         try {
             mutex.acquire();
-            if(this.quantity != 0) {
-                q = this.quantity;
+            if(this.quantity != 0 && times <= this.quantity) {
+                //useless cycle to increment duration of the extraction
+                for(int i = 0; i < times; i++)
+                    this.quantity--;
                 //reduce the amount of shared quantity to local thread quantity
-                this.quantity -= q;
+                q = times;
             }
         } catch(InterruptedException mutex_e) {
             //print mutex error
+            mutex_e.printStackTrace();
         }
         mutex.release();
 
         return q;
+    }
+
+    public void increaseQuantity(int times) {
+
+        //critical section
+        try {
+            mutex.acquire();
+                //useless cycle to increment duration of the operation
+                for(int i = 0; i < times; i++)
+                    this.quantity++;
+        } catch(InterruptedException mutex_e) {
+            //print mutex error
+            mutex_e.printStackTrace();
+        }
+        mutex.release();
+    }
+
+    public void printInfo() {
+        System.out.println("\tComponent "+this.type+" = "+this.quantity);
     }
 }
