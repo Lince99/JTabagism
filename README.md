@@ -99,8 +99,9 @@ java -jar Jtabagism.jar
 ## Compilazione
 
 Nel caso sia necessaria la compilazione del codice sorgente, di seguito potrete
-trovare i passaggi necessari all'esecuzione del programma:
-TODO OH MY GOD HOW I DID THIS
+trovare i passaggi necessari all'esecuzione del programma:<br>
+Usare ./make.sh per iniziare la compilazione del programma<br>
+Oppure ./make_nogui.sh se si vuole solo compilare il core.
 
 ### Dipendenze
 - Java
@@ -136,8 +137,7 @@ E infine utilizzare i seguenti comandi per compilare da terminale i singoli codi
 
 ```bash
 mdkir Release
-javac -classpath /usr/share/java/gtk-4.1.jar -d Release Main.java
-#javac -classpath /usr/local/share/java/gtk-4.1.jar -d Release Main.java
-java -classpath /usr/share/java/gtk-4.1.jar Main
-#java -classpath /usr/local/share/java/gtk-4.1.jar Main
+javac -classpath /usr/local/share/java/gtk-4.1.jar -d Release Main.java
+cd Release
+java -classpath /usr/local/share/java/gtk-4.1.jar Main
 ```

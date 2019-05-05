@@ -1,5 +1,3 @@
-package Tabagism.Tabagism_core;
-
 import java.util.concurrent.Semaphore;
 import java.util.ArrayList;
 import java.util.Random;
@@ -19,6 +17,7 @@ public class Shop extends Thread {
         this.randgen = new Random();
         this.public_resource = components;
         this.local_resource = new ArrayList<Component>(components.size());
+        System.out.println("LOCAL SIZE: "+this.local_resource.size());
         this.lock_risorse = sem;
         this.t_name = name;
         this.change_time = 0;
@@ -109,8 +108,6 @@ public class Shop extends Thread {
         extracted = this.public_resource.get(i);
         //crea una copia locale
         local = new Component(extracted.getType());
-        //if(!this.local_resource.contains(local))
-        //    this.local_resource.add(local);
         //e estrae il contenuto da quella pubblica in quella locale
         local.setQuantity(extracted.reduceQuantity(extracted.getQuantity()));
         //alla fine assegna la copia all'array di risorse locali
@@ -139,7 +136,7 @@ public class Shop extends Thread {
     public void printInfo() {
         System.out.println("Shop "+this.t_name+
                            " with clock set to: "+this.change_time);
-        System.out.println("Public resources:");
+                System.out.println("Public resources:");
         for(int i = 0; i < this.public_resource.size(); i++)
             System.out.println("\t"+this.public_resource.get(i).getType()+
                              ": "+this.public_resource.get(i).getQuantity());

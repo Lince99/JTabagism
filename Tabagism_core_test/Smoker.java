@@ -1,5 +1,3 @@
-package Tabagism.Tabagism_core;
-
 import java.util.concurrent.Semaphore;
 import java.util.ArrayList;
 import java.util.Random;
@@ -101,7 +99,7 @@ public class Smoker extends Thread {
         for(int i = 0; i < this.public_resource.size(); i++)
             System.out.println("\t"+this.public_resource.get(i).getType()+
                              ": "+this.public_resource.get(i).getQuantity());
-        System.out.println("\tLocal resources: "+this.local_resource);
+        System.out.println("Local resources: "+this.local_resource);
         for(int i = 0; i < this.local_resource.size(); i++)
             System.out.println("\t"+this.local_resource.get(i).getType()+
                              ": "+this.local_resource.get(i).getQuantity());
