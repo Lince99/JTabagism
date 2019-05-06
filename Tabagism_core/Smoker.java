@@ -28,7 +28,6 @@ public class Smoker extends Thread {
         this.printInfo();
     }
 
-    @Override
     public void run() {
         int i;
         boolean need_public = false;
@@ -66,27 +65,40 @@ public class Smoker extends Thread {
     private void publicToLocal(int i) {
         Component extracted;
         Component local;
+        int min_extract = 10;
+        int max_extract = 100;
+        int rand_extract = 0;
 
         //ne legge le proprieta'
         extracted = this.public_resource.get(i);
         //crea una copia locale
         local = new Component(extracted.getType());
         //e estrae il contenuto da quella pubblica in quella locale
-        local.setQuantity(extracted.reduceQuantity(extracted.getQuantity()));
+        rand_extract = this.randgen.nextInt(max_extract)+min_extract;
+        local.setQuantity(extracted.decreaseQuantity(rand_extract));
         //alla fine assegna la copia all'array di risorse locali
-        this.local_resource.add(i, local);
+        if(this.local_resource.size() <= i)
+            this.local_resource.add(i, local);
+        else
+            this.local_resource.set(i, local);
     }
 
     //azione che viene avviata solo se il fumatore possiede tutte le risorse
     private void smoke() {
         Component usable;
         int i;
+        int required_q = 10;
+        int rand_extract = 0;
 
         //riduce le risorse a random
         for(i = 0; i < this.local_resource.size(); i++) {
             usable = this.local_resource.get(i);
-            usable.setQuantity(this.randgen.nextInt(usable.getQuantity())+1);
+            rand_extract = this.randgen.nextInt(
+                            usable.getQuantity()-required_q)+required_q;
+            usable.setQuantity(usable.getQuantity()-rand_extract);
         }
+        System.out.println("FUMATORE "+this.t_name+" FUMA:");
+        this.printInfo();
         try {
             Thread.sleep(this.smoke_time);
         } catch(InterruptedException sleep_e) {

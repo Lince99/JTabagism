@@ -1,6 +1,7 @@
 import java.util.concurrent.Semaphore;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Scanner;
 
 
 
@@ -13,16 +14,42 @@ public class Shop extends Thread {
     private String t_name;
     private int change_time;
 
-    public Shop(ArrayList<Component> components, String name, Semaphore sem) {
+    public Shop(ArrayList<Component> cmp, Semaphore s) {
         this.randgen = new Random();
-        this.public_resource = components;
-        this.local_resource = new ArrayList<Component>(components.size());
-        System.out.println("LOCAL SIZE: "+this.local_resource.size());
-        this.lock_risorse = sem;
+        this.public_resource = cmp;
+        this.local_resource = new ArrayList<Component>(cmp.size());
+        this.lock_risorse = s;
+        this.t_name = "Shop";
+        this.change_time = 0;
+        //avvia il thread del tabacchino
+        new Thread(this, this.t_name).start();
+        System.out.println("\nSHOP CREATO:");
+        this.printInfo();
+    }
+
+    public Shop(ArrayList<Component> cmp, String name, Semaphore s) {
+        this.randgen = new Random();
+        this.public_resource = cmp;
+        this.local_resource = new ArrayList<Component>(cmp.size());
+        this.lock_risorse = s;
         this.t_name = name;
         this.change_time = 0;
         //avvia il thread del tabacchino
         new Thread(this, this.t_name).start();
+        System.out.println("\nTABACCHINO CREATO:");
+        this.printInfo();
+    }
+
+    public Shop(ArrayList<Component> cmp, String name, Semaphore s, int time) {
+        this.randgen = new Random();
+        this.public_resource = cmp;
+        this.local_resource = new ArrayList<Component>(cmp.size());
+        this.lock_risorse = s;
+        this.t_name = name;
+        this.change_time = time;
+        //avvia il thread del tabacchino
+        new Thread(this, this.t_name).start();
+        System.out.println("\nTABACCHINO CREATO:");
         this.printInfo();
     }
 
@@ -36,8 +63,6 @@ public class Shop extends Thread {
     }
 
     public void run() {
-        boolean resource_empty = false;
-        int resource_empty_pos = 0;
         int i = 0;
         int n_dispose = 0;
 
@@ -46,17 +71,23 @@ public class Shop extends Thread {
             try {
                 this.lock_risorse.acquire();
                 //per ogni risorsa pubblica presente
-                for(i = 0; i < this.local_resource.size(); i++) {
+                for(i = 0; i < this.public_resource.size(); i++) {
                     //ne estrae tutti i componenti in quella locale
                     publicToLocal(i);
                     //salva la posizione del componente senza scorte se presente
                     if(this.local_resource.get(i).getQuantity() == 0) {
-                        resource_empty = true;
-                        resource_empty_pos = i;
-                        break;
+                        //Se una risorsa e' terminata lo notifica al monitor
+                        System.out.println("Risorsa "+
+                                           this.local_resource.get(i).
+                                                getType()+" vuota!");
+                        Scanner scan = new Scanner(System.in);
+                        System.out.println("Vuoi riempirla di quanto?");
+                        n_dispose = scan.nextInt();
+                        if(n_dispose <= 0)
+                            break; //TODO
+                        else
+                            this.local_resource.get(i).setQuantity(n_dispose);
                     }
-                    else
-                        resource_empty = true;
                 }
 
                 //Poi ne mette a disposizione solo alcune in quantita' limitate
@@ -79,19 +110,12 @@ public class Shop extends Thread {
             }
             this.lock_risorse.release();
 
-            //Se una risorsa e' terminata lo notifica al monitor
-            if(resource_empty) {
-                System.out.println("Risorsa "+
-                                   this.local_resource.
-                                        get(resource_empty_pos).
-                                        getType()+" vuota!");
-            }
-
             //Notifica a tutti i fumatori in attesa
 
-            //Dopo change_time passati, o dopo che un fumatore ha finito di fumare,
-            //il tabacchino cambia le risorse disponibili e ripete
+            //Dopo change_time passati, o dopo che un fumatore ha finito
+            //di fumare, il tabacchino cambia le risorse disponibili e ripete
             try {
+                System.out.println("TABACCHINO DORME PER "+this.change_time+" ms");
                 Thread.sleep(this.change_time);
             } catch(InterruptedException sleep_e) {
                 sleep_e.printStackTrace();
@@ -109,9 +133,12 @@ public class Shop extends Thread {
         //crea una copia locale
         local = new Component(extracted.getType());
         //e estrae il contenuto da quella pubblica in quella locale
-        local.setQuantity(extracted.reduceQuantity(extracted.getQuantity()));
+        local.setQuantity(extracted.decreaseQuantity(extracted.getQuantity()));
         //alla fine assegna la copia all'array di risorse locali
-        this.local_resource.add(i, local);
+        if(this.local_resource.size() <= i)
+            this.local_resource.add(i, local);
+        else
+            this.local_resource.set(i, local);
     }
 
     //estrae risorse dai componenti pubblici per aggiungerli in quelli privati
@@ -126,10 +153,10 @@ public class Shop extends Thread {
         extracted = this.public_resource.get(i);
         //estrae un quantitativo casuale dalla risorsa locale
         n_dispose_q = this.randgen.nextInt(local.getQuantity())+1;
-        local.reduceQuantity(n_dispose_q);
+        local.decreaseQuantity(n_dispose_q);
         //per poi mettere quella quantita' in quella pubblica
         extracted.increaseQuantity(n_dispose_q);
-        this.public_resource.add(i, extracted);
+        this.public_resource.set(i, extracted);
     }
 
     //estrae risorse dai componenti private per aggiungerli in quella pubblici

@@ -43,7 +43,7 @@ public class Component {
         return this.quantity;
     }
 
-    public int reduceQuantity(int times) {
+    public int decreaseQuantity(int times) {
         int q = 0;
 
         //critical section

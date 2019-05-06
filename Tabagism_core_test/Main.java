@@ -32,8 +32,7 @@ public class Main {
         //Avvia il monitor
 
         //Crea il thread del tabacchino
-        tabacchino = new Shop(risorse, "tbc", lock_risorse);
-        tabacchino.setChange_time(check_q_tbc);
+        tabacchino = new Shop(risorse, "tbc", lock_risorse, check_q_tbc);
         //tabacchino.printInfo();
         //attende che il tabacchino inizi ad occupare le risorse
         try {
