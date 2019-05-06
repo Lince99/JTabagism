@@ -61,6 +61,7 @@ public class Component {
             mutex_e.printStackTrace();
         }
         mutex.release();
+        System.out.println("Reduced "+this.type+" quantity of "+q);
 
         return q;
     }

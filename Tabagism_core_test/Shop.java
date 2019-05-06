@@ -165,11 +165,12 @@ public class Shop extends Thread {
                            " with clock set to: "+this.change_time);
                 System.out.println("Public resources:");
         for(int i = 0; i < this.public_resource.size(); i++)
-            System.out.println("\t"+this.public_resource.get(i).getType()+
+            System.out.print("\t"+this.public_resource.get(i).getType()+
                              ": "+this.public_resource.get(i).getQuantity());
-        System.out.println("Local resources: "+this.local_resource);
+        System.out.println("\nLocal resources:");
         for(int i = 0; i < this.local_resource.size(); i++)
-            System.out.println("\t"+this.local_resource.get(i).getType()+
+            System.out.print("\t"+this.local_resource.get(i).getType()+
                              ": "+this.local_resource.get(i).getQuantity());
+        System.out.print("\n");
     }
 }

@@ -11,6 +11,7 @@ public class Smoker extends Thread {
     private Semaphore lock_risorse;
     private int smoke_time; //tempo di fumata
     private int min_smoke_time;
+    private int min_smoke_q;
     private String t_name;
 
     public Smoker(ArrayList<Component> resource, String name, int max_t, Semaphore sem) {
@@ -87,14 +88,13 @@ public class Smoker extends Thread {
     private void smoke() {
         Component usable;
         int i;
-        int required_q = 10;
         int rand_extract = 0;
 
         //riduce le risorse a random
         for(i = 0; i < this.local_resource.size(); i++) {
             usable = this.local_resource.get(i);
             rand_extract = this.randgen.nextInt(
-                            usable.getQuantity()-required_q)+required_q;
+                            usable.getQuantity()-min_smoke_q)+min_smoke_q;
             usable.setQuantity(usable.getQuantity()-rand_extract);
         }
         System.out.println("FUMATORE "+this.t_name+" FUMA:");
@@ -111,11 +111,12 @@ public class Smoker extends Thread {
                            " with smoking time set to: "+this.smoke_time);
         System.out.println("Public resources:");
         for(int i = 0; i < this.public_resource.size(); i++)
-            System.out.println("\t"+this.public_resource.get(i).getType()+
+            System.out.print("\t"+this.public_resource.get(i).getType()+
                              ": "+this.public_resource.get(i).getQuantity());
-        System.out.println("Local resources: "+this.local_resource);
+        System.out.println("\nLocal resources:");
         for(int i = 0; i < this.local_resource.size(); i++)
-            System.out.println("\t"+this.local_resource.get(i).getType()+
+            System.out.print("\t"+this.local_resource.get(i).getType()+
                              ": "+this.local_resource.get(i).getQuantity());
+        System.out.print("\n");
     }
 }

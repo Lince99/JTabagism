@@ -13,8 +13,8 @@ public class Main {
         int tabacco_q = 10000;
         int cartina_q = 1000;
         int filtro_q = 1000;
-        int accendino_q = 100;
-        int check_q_tbc = 10000; //ogni 10 secondi controlla le risorse
+        int accendino_q = 1000;
+        int check_q_tbc = 5000; //ogni 5 secondi controlla le risorse
         Shop tabacchino;
         ArrayList<Smoker> fumatori;
         Semaphore lock_risorse = new Semaphore(1);
