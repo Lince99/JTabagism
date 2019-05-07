@@ -68,6 +68,7 @@ public class Component {
 
     public void increaseQuantity(int times) {
 
+	System.out.println("Increasing "+this.type+" quantity of "+times);
         //critical section
         try {
             mutex.acquire();

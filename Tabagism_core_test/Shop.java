@@ -83,8 +83,10 @@ public class Shop extends Thread {
                         Scanner scan = new Scanner(System.in);
                         System.out.println("Vuoi riempirla di quanto?");
                         n_dispose = scan.nextInt();
-                        if(n_dispose <= 0)
-                            break; //TODO
+                        if(n_dispose <= 0) {
+			    System.out.println("Uscita del tabacchino...");
+                            return;
+			}
                         else
                             this.local_resource.get(i).setQuantity(n_dispose);
                     }
@@ -115,7 +117,7 @@ public class Shop extends Thread {
             //Dopo change_time passati, o dopo che un fumatore ha finito
             //di fumare, il tabacchino cambia le risorse disponibili e ripete
             try {
-                System.out.println("TABACCHINO DORME PER "+this.change_time+" ms");
+                System.out.println("TABACCHINO DORMIRA' PER "+this.change_time+" ms");
                 Thread.sleep(this.change_time);
             } catch(InterruptedException sleep_e) {
                 sleep_e.printStackTrace();
@@ -163,11 +165,11 @@ public class Shop extends Thread {
     public void printInfo() {
         System.out.println("Shop "+this.t_name+
                            " with clock set to: "+this.change_time);
-                System.out.println("Public resources:");
+        System.out.println("\nPublic resources ["+this.public_resource.size()+"]:");
         for(int i = 0; i < this.public_resource.size(); i++)
             System.out.print("\t"+this.public_resource.get(i).getType()+
                              ": "+this.public_resource.get(i).getQuantity());
-        System.out.println("\nLocal resources:");
+        System.out.println("\nLocal resources ["+this.local_resource.size()+"]:");
         for(int i = 0; i < this.local_resource.size(); i++)
             System.out.print("\t"+this.local_resource.get(i).getType()+
                              ": "+this.local_resource.get(i).getQuantity());

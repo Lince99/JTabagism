@@ -10,11 +10,11 @@ public class Main {
     public static ArrayList<Component> risorse;
 
     public static void main(String[] args) {
-        int tabacco_q = 10000;
-        int cartina_q = 1000;
-        int filtro_q = 1000;
-        int accendino_q = 1000;
-        int check_q_tbc = 5000; //ogni 5 secondi controlla le risorse
+        int tabacco_q = 100;
+        int cartina_q = 100;
+        int filtro_q = 100;
+        int accendino_q = 100;
+        int check_q_tbc = 2000; //ogni 5 secondi controlla le risorse
         Shop tabacchino;
         ArrayList<Smoker> fumatori;
         Semaphore lock_risorse = new Semaphore(1);
@@ -41,12 +41,21 @@ public class Main {
             sleep_e.printStackTrace();
         }
 
-        //Crea i thread dei fumatori
+        //crea i thread dei fumatori
         fumatori = new ArrayList<Smoker>();
         for(int i = 0; i < n_fumatori; i++) {
             fumatori.add(new Smoker(risorse, "smc#"+i, max_smoke_time, lock_risorse));
             //fumatori.get(i).printInfo();
         }
 
+	//termina i thread
+	try {
+		tabacchino.join();
+		for(int i = 0; i < n_fumatori; i++) {
+			fumatori.get(i).join();
+		}
+	} catch (InterruptedException join_e) {
+		join_e.printStackTrace();
+	}
     }
 }

@@ -100,6 +100,7 @@ public class Smoker extends Thread {
         System.out.println("FUMATORE "+this.t_name+" FUMA:");
         this.printInfo();
         try {
+	    System.out.println("Fumatore dorme per "+this.smoke_time+"ms");
             Thread.sleep(this.smoke_time);
         } catch(InterruptedException sleep_e) {
             sleep_e.printStackTrace();
@@ -109,11 +110,11 @@ public class Smoker extends Thread {
     public void printInfo() {
         System.out.println("Smoker "+this.t_name+
                            " with smoking time set to: "+this.smoke_time);
-        System.out.println("Public resources:");
+        System.out.println("\nPublic resources ["+this.public_resource.size()+"]:");
         for(int i = 0; i < this.public_resource.size(); i++)
             System.out.print("\t"+this.public_resource.get(i).getType()+
                              ": "+this.public_resource.get(i).getQuantity());
-        System.out.println("\nLocal resources:");
+        System.out.println("\nLocal resources ["+this.local_resource.size()+"]:");
         for(int i = 0; i < this.local_resource.size(); i++)
             System.out.print("\t"+this.local_resource.get(i).getType()+
                              ": "+this.local_resource.get(i).getQuantity());
