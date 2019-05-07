@@ -31,7 +31,6 @@ public class Component {
             mutex.acquire();
             this.quantity = q;
         } catch(InterruptedException mutex_e) {
-            //print mutex error
             mutex_e.printStackTrace();
         }
         mutex.release();
@@ -63,13 +62,11 @@ public class Component {
             mutex_e.printStackTrace();
         }
         mutex.release();
-        System.out.println("Reduced "+this.type+" quantity of "+q);
 
         return q;
     }
 
     public void increaseQuantity(int times) {
-
         //critical section
         try {
             mutex.acquire();
@@ -86,4 +83,5 @@ public class Component {
     public void printInfo() {
         System.out.println("\tComponent "+this.type+" = "+this.quantity);
     }
+
 }

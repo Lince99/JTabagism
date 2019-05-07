@@ -8,20 +8,21 @@ public class Main {
     private static int n_fumatori;
     private static int max_smoke_time;
     public static ArrayList<Component> risorse;
+    private static Monitor monitor = new Monitor();
 
     public static void main(String[] args) {
-        int tabacco_q = 100;
-        int cartina_q = 100;
-        int filtro_q = 100;
-        int accendino_q = 100;
-        int check_q_tbc = 2000; //ogni 5 secondi controlla le risorse
+        int tabacco_q = 1;
+        int cartina_q = 2000;
+        int filtro_q = 99;
+        int accendino_q = 2000;
+        int check_q_tbc = 12000; //ogni n secondi controlla le risorse
         Shop tabacchino;
         ArrayList<Smoker> fumatori;
         Semaphore lock_risorse = new Semaphore(1);
 
         //Setup iniziale
-        n_fumatori = 4;
-        max_smoke_time = 10000;
+        n_fumatori = 1000;
+        max_smoke_time = 4000; //(int)(check_q_tbc / 2);
         //Crea le risorse per i fumatori e il tabacchino
         risorse = new ArrayList<Component>();
         risorse.add(new Component("Tabacco", tabacco_q));
@@ -29,11 +30,12 @@ public class Main {
         risorse.add(new Component("Filtro", filtro_q));
         risorse.add(new Component("Accendino", accendino_q));
 
-        //Avvia il monitor
+        System.out.print("\nMAIN\t");
+        monitor.printListInfo(risorse);
 
         //Crea il thread del tabacchino
+        System.out.println("- - - Creazione tabacchino... - - -");
         tabacchino = new Shop(risorse, "tbc", lock_risorse, check_q_tbc);
-        //tabacchino.printInfo();
         //attende che il tabacchino inizi ad occupare le risorse
         try {
             Thread.sleep(100);
@@ -44,18 +46,9 @@ public class Main {
         //crea i thread dei fumatori
         fumatori = new ArrayList<Smoker>();
         for(int i = 0; i < n_fumatori; i++) {
-            fumatori.add(new Smoker(risorse, "smc#"+i, max_smoke_time, lock_risorse));
-            //fumatori.get(i).printInfo();
+            System.out.println("- - - Creazione fumatore "+i+"... - - -");
+            fumatori.add(new Smoker(risorse, "smc#"+i,
+                                    max_smoke_time, lock_risorse));
         }
-
-	//termina i thread
-	try {
-		tabacchino.join();
-		for(int i = 0; i < n_fumatori; i++) {
-			fumatori.get(i).join();
-		}
-	} catch (InterruptedException join_e) {
-		join_e.printStackTrace();
-	}
     }
 }
