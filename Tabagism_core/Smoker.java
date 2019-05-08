@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 
+
 public class Smoker extends Thread {
 
     private Random randgen;
@@ -65,8 +66,8 @@ public class Smoker extends Thread {
                     //occupa le risorse e ne sottrae la quantita' necessaria
                     for(i = 0; i < this.public_resource.size(); i++)
                         publicToLocal(i);
-                    System.out.print("smk PUBLIC\t");
-                    monitor.printListInfo(public_resource);
+                    //System.out.print("smk PUBLIC\t");
+                    //monitor.printListInfo(public_resource);
                     System.out.print("Smoker "+this.t_name+"\t");
                     monitor.printListInfo(local_resource);
                 } catch(InterruptedException mutex_e) {
@@ -75,8 +76,8 @@ public class Smoker extends Thread {
                 this.lock_risorse.release();
                 //REMOVE THIS
                 try {
-                    System.out.println("Smoker "+this.t_name+" dorme per "+
-                                       this.smoke_time+" ms");
+                    //System.out.println("Smoker "+this.t_name+" dorme per "+
+                    //                   this.smoke_time+" ms");
                     Thread.sleep(this.smoke_time);
                 } catch(InterruptedException sleep_e) {
                     sleep_e.printStackTrace();
@@ -85,12 +86,12 @@ public class Smoker extends Thread {
             //se ha tutte le risorse per fumare
             else if(hasAllLocal()) {
                 //Fuma per tot tempo
-                System.out.println("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -");
+                System.out.println("\n- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -");
                 System.out.println("SMOKER "+this.t_name+" FUMA PER "+
                                    this.smoke_time+" MS");
                 System.out.println("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -");
-                System.out.print("Smoker "+this.t_name+"\t");
-                monitor.printListInfo(local_resource);
+                //System.out.print("Smoker "+this.t_name+"\t");
+                //monitor.printListInfo(local_resource);
                 smoke();
                 n_smoke--;
                 //Notifica al tabacchino che ha finito di fumare TODO
@@ -104,9 +105,10 @@ public class Smoker extends Thread {
         Component extracted;
         Component local;
         int min_extract = 1;
-        int max_extract = 10;
+        int max_extract = 5;
         int rand_extract = 0;
         int local_current = 0;
+        int max_local_q = 10;
 
         //ne legge le proprieta'
         extracted = this.public_resource.get(i);
@@ -117,8 +119,11 @@ public class Smoker extends Thread {
             local_current = 0;
         else
             local_current = this.local_resource.get(i).getQuantity();
+        //se ha gia' abbastanza risorse locali esce dall'estrazione
+        if(local_current >= max_local_q)
+            return;
         //crea un quantitativo random da estrarre
-        rand_extract = this.randgen.nextInt(max_extract)+min_extract;
+        rand_extract = this.randgen.nextInt(max_extract-min_extract)+min_extract;
         //e estrae il contenuto da quella pubblica in quella locale
         local.setQuantity(local_current+
                           extracted.decreaseQuantity(rand_extract));
@@ -132,20 +137,26 @@ public class Smoker extends Thread {
     //azione che viene avviata solo se il fumatore possiede tutte le risorse
     private void smoke() {
         Component usable;
-        int i;
+        int usable_q = 0;
+        int i = 0;
         int rand_extract = 0;
         int min_smoke_q = 1;
+        int max_smoke_q = 2;
 
         //riduce le risorse a random
         for(i = 0; i < this.local_resource.size(); i++) {
             usable = this.local_resource.get(i);
-            if(usable.getQuantity() == min_smoke_q)
+            usable_q = usable.getQuantity();
+            //estrae una quantita' random rispettando il minimo e il massimo
+            if(usable_q == min_smoke_q)
                 rand_extract = min_smoke_q;
             else {
-                rand_extract = this.randgen.nextInt(usable.getQuantity()-
-                                                    min_smoke_q)+min_smoke_q;
+                if(usable_q < max_smoke_q)
+                    max_smoke_q = usable_q;
+                rand_extract = this.randgen.nextInt(max_smoke_q - min_smoke_q) +
+                               min_smoke_q;
             }
-            usable.setQuantity(usable.getQuantity()-rand_extract);
+            usable.setQuantity(usable_q - rand_extract);
         }
         try {
 	        System.out.println("Fumatore dorme per "+this.smoke_time+"ms");
