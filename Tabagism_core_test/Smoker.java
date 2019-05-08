@@ -83,7 +83,7 @@ public class Smoker extends Thread {
             //se ha tutte le risorse per fumare
             else if(hasAllLocal()) {
                 //Fuma per tot tempo
-                System.out.println("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -");
+                System.out.println("\n- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -");
                 System.out.println("SMOKER "+this.t_name+" FUMA PER "+
                                    this.smoke_time+" MS");
                 System.out.println("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -");

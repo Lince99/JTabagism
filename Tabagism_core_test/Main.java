@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.concurrent.Semaphore;
+import java.util.Scanner;
 
 
 
@@ -11,27 +12,37 @@ public class Main {
     private static Monitor monitor = new Monitor();
 
     public static void main(String[] args) {
-        int tabacco_q = 1;
-        int cartina_q = 2000;
-        int filtro_q = 99;
-        int accendino_q = 2000;
-        int check_q_tbc = 12000; //ogni n secondi controlla le risorse
+        Scanner scan = new Scanner(System.in);
+        int tabacco_q = 100;
+        int cartina_q = 30;
+        int filtro_q = 5;
+        int accendino_q = 8;
+        int check_q_tbc = 4000; //ogni n secondi controlla le risorse
         Shop tabacchino;
         ArrayList<Smoker> fumatori;
         Semaphore lock_risorse = new Semaphore(1);
 
         //Setup iniziale
-        n_fumatori = 1000;
-        max_smoke_time = 4000; //(int)(check_q_tbc / 2);
+        System.out.println("Quanto tabacco vuoi creare?");
+        tabacco_q = scan.nextInt();
+        System.out.println("Quante cartine vuoi creare?");
+        cartina_q = scan.nextInt();
+        System.out.println("Quanti filtri vuoi creare?");
+        filtro_q = scan.nextInt();
+        System.out.println("Quanti accendini vuoi creare?");
+        accendino_q = scan.nextInt();
+        System.out.println("Ogni quanti secondi il tabacchino cambia vendite?");
+        check_q_tbc = scan.nextInt()*1000;
+        System.out.println("Quanti fumatori ci sono?");
+        n_fumatori = scan.nextInt();
+        System.out.println("Quanti secondi fumano al massimo?");
+        max_smoke_time = scan.nextInt();
         //Crea le risorse per i fumatori e il tabacchino
         risorse = new ArrayList<Component>();
         risorse.add(new Component("Tabacco", tabacco_q));
         risorse.add(new Component("Cartina", cartina_q));
         risorse.add(new Component("Filtro", filtro_q));
         risorse.add(new Component("Accendino", accendino_q));
-
-        System.out.print("\nMAIN\t");
-        monitor.printListInfo(risorse);
 
         //Crea il thread del tabacchino
         System.out.println("- - - Creazione tabacchino... - - -");
