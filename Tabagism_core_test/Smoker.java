@@ -1,4 +1,5 @@
 import java.util.concurrent.Semaphore;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -18,6 +19,9 @@ public class Smoker extends Thread {
     private String t_name;
     private int n_smoke;
 
+    private AtomicBoolean wait_smoker;
+    private Object lock;
+
     public Smoker(ArrayList<Component> res, String name, int t, Semaphore sem) {
         this.randgen = new Random();
         this.public_resource = res;
@@ -28,6 +32,23 @@ public class Smoker extends Thread {
         this.min_smoke_time = 1000; //Minimo un secondo di fumata
         this.smoke_time = randgen.nextInt(t)+this.min_smoke_time;
         this.t_name = name;
+        //avvia il thread del fumatore
+        new Thread(this, this.t_name).start();
+    }
+
+    public Smoker(ArrayList<Component> res, String name, int t, Semaphore sem,
+                  AtomicBoolean wait, Object lock) {
+        this.randgen = new Random();
+        this.public_resource = res;
+        this.local_resource = new ArrayList<Component>(res.size());
+        this.local_need_q = new ArrayList<Integer>();
+        for(int i = 0; i < res.size(); i++)
+        this.lock_risorse = sem;
+        this.min_smoke_time = 1000; //Minimo un secondo di fumata
+        this.smoke_time = randgen.nextInt(t)+this.min_smoke_time;
+        this.t_name = name;
+        this.wait_smoker = wait;
+        this.lock = lock;
         //avvia il thread del fumatore
         new Thread(this, this.t_name).start();
     }
@@ -72,10 +93,19 @@ public class Smoker extends Thread {
                     mutex_e.printStackTrace();
                 }
                 this.lock_risorse.release();
-                //REMOVE THIS
+                //attende una notifica dal tabacchino
+                /*synchronized(this.lock) {
+                    try {
+                        while(!this.wait_smoker.get()) {
+                            System.out.println("Smoker "+this.t_name+
+                                               " attende...");
+                            lock.wait();
+                        }
+                    } catch(Exception e) {
+                        e.printStackTrace();
+                    }
+                }*/
                 try {
-                    //System.out.println("Smoker "+this.t_name+" dorme per "+
-                    //                   this.smoke_time+" ms");
                     Thread.sleep(this.smoke_time);
                 } catch(InterruptedException sleep_e) {
                     sleep_e.printStackTrace();
@@ -84,15 +114,16 @@ public class Smoker extends Thread {
             //se ha tutte le risorse per fumare
             else if(hasAllLocal()) {
                 //Fuma per tot tempo
-                System.out.println("\n- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -");
+                System.out.println("\n- - - - - - - - - - - - - - - - - - - "+
+                                   "- - - - - - - - - - - - - - - - - - - - ");
                 System.out.println("SMOKER "+this.t_name+" FUMA PER "+
                                    this.smoke_time+" MS");
-                System.out.println("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -");
+                System.out.println("\n- - - - - - - - - - - - - - - - - - - "+
+                                   "- - - - - - - - - - - - - - - - - - - - ");
                 //System.out.print("Smoker "+this.t_name+"\t");
                 //monitor.printListInfo(local_resource);
                 smoke();
                 n_smoke--;
-                //Notifica al tabacchino che ha finito di fumare TODO
             }
         }
         System.out.println("\t\t\t\tFUMATORE "+this.t_name+" HA TERMINATO");
@@ -162,6 +193,16 @@ public class Smoker extends Thread {
         } catch(InterruptedException sleep_e) {
             sleep_e.printStackTrace();
         }
+        //notifica al tabacchino che ha finito di fumare
+        /*synchronized(this.lock) {
+            try {
+                System.out.println("Smoker "+this.t_name+" notifica!");
+                this.wait_smoker.set(true);
+                lock.notify();
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
+        }*/
     }
 
     //se non ha tutte le risorse locali per fumare ritorna falso

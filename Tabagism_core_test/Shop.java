@@ -1,4 +1,5 @@
 import java.util.concurrent.Semaphore;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
@@ -14,6 +15,9 @@ public class Shop extends Thread {
     private Semaphore lock_risorse;
     private String t_name;
     private int change_time;
+
+    private AtomicBoolean wait_smoker;
+    private Object lock;
 
     public Shop(ArrayList<Component> cmp, Semaphore s) {
         this.randgen = new Random();
@@ -47,6 +51,21 @@ public class Shop extends Thread {
         this.lock_risorse = s;
         this.t_name = name;
         this.change_time = time;
+        //avvia il thread del tabacchino
+        new Thread(this, this.t_name).start();
+    }
+
+    public Shop(ArrayList<Component> cmp, String name, Semaphore s, int time,
+                AtomicBoolean wait, Object lock) {
+        this.randgen = new Random();
+        this.monitor = new Monitor();
+        this.public_resource = cmp;
+        this.local_resource = new ArrayList<Component>(cmp.size());
+        this.lock_risorse = s;
+        this.t_name = name;
+        this.change_time = time;
+        this.wait_smoker = wait;
+        this.lock = lock;
         //avvia il thread del tabacchino
         new Thread(this, this.t_name).start();
     }
@@ -121,8 +140,6 @@ public class Shop extends Thread {
             }
             this.lock_risorse.release();
 
-            //Notifica a tutti i fumatori in attesa TODO
-
             //Dopo change_time passati, o dopo che un fumatore ha finito
             //di fumare, il tabacchino cambia le risorse disponibili e ripete
             try {
@@ -132,6 +149,21 @@ public class Shop extends Thread {
             } catch(InterruptedException sleep_e) {
                 sleep_e.printStackTrace();
             }
+            //Notifica a tutti i fumatori in attesa
+            /*synchronized(this.lock) {
+                try {
+                    //prima attende che almeno un fumatore abbia finito
+                    while(this.wait_smoker.get()) {
+                        this.lock.wait();
+                        System.out.println("Shop "+this.t_name+" attende...");
+                    }
+                    this.wait_smoker.set(false);
+                    System.out.println("Shop "+this.t_name+" notifica!");
+                    this.lock.notifyAll();
+                } catch(Exception e) {
+                    e.printStackTrace();
+                }
+            }*/
         }
     }
 
