@@ -18,8 +18,8 @@ public class Main {
         int accendino_q = 8;
         Shop tabacchino;
         int check_q_tbc = 4000; //ogni n secondi controlla le risorse
-        //AtomicBoolean sync_shop_smoker = new AtomicBoolean(false);
-        //Object lock_sync = new Object();
+        AtomicBoolean sync_shop_smoker = new AtomicBoolean(true);
+        Object lock_sync = new Object();
         ArrayList<Smoker> fumatori;
         int n_fumatori = 0;
         int max_smoke_time = 0;
@@ -49,9 +49,9 @@ public class Main {
 
         //Crea il thread del tabacchino
         System.out.println("- - - Creazione tabacchino... - - -");
-        //tabacchino = new Shop(risorse, "tbc", lock_risorse, check_q_tbc,
-        //                      sync_shop_smoker, lock_sync);
-        tabacchino = new Shop(risorse, "tbc", lock_risorse, check_q_tbc);
+        tabacchino = new Shop(risorse, "tbc", lock_risorse, check_q_tbc,
+                              sync_shop_smoker, lock_sync);
+        //tabacchino = new Shop(risorse, "tbc", lock_risorse, check_q_tbc);
         //attende che il tabacchino inizi ad occupare le risorse
         try {
             Thread.sleep(100);
@@ -63,11 +63,11 @@ public class Main {
         fumatori = new ArrayList<Smoker>();
         for(int i = 0; i < n_fumatori; i++) {
             System.out.println("- - - Creazione fumatore "+i+"... - - -");
-            //fumatori.add(new Smoker(risorse, "smc#"+i,
-            //                        max_smoke_time, lock_risorse,
-            //                        sync_shop_smoker, lock_sync));
             fumatori.add(new Smoker(risorse, "smc#"+i,
-                                    max_smoke_time, lock_risorse));
+                                    max_smoke_time, lock_risorse,
+                                    sync_shop_smoker, lock_sync));
+            //fumatori.add(new Smoker(risorse, "smc#"+i,
+            //                        max_smoke_time, lock_risorse));
         }
     }
 }

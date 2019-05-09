@@ -57,9 +57,21 @@ public class Smoker extends Thread {
     public void run() {
         int i;
         boolean need_public = false;
-        int n_smoke = 3;
+        int n_smoke = 5;
 
         while(n_smoke > 0) {
+            //attende una notifica dal tabacchino
+            synchronized(this.lock) {
+                try {
+                    while(this.wait_smoker.get()) {
+                        System.out.println("Smoker "+this.t_name+
+                                            " attende...");
+                        lock.wait();
+                    }
+                } catch(Exception e) {
+                    e.printStackTrace();
+                }
+            }
             //Il fumatore controlla le risorse locali per vedere se possiede
             //quelle necessarie a fumare
             if(this.local_resource.size() == 0) {
@@ -93,18 +105,6 @@ public class Smoker extends Thread {
                     mutex_e.printStackTrace();
                 }
                 this.lock_risorse.release();
-                //attende una notifica dal tabacchino
-                /*synchronized(this.lock) {
-                    try {
-                        while(!this.wait_smoker.get()) {
-                            System.out.println("Smoker "+this.t_name+
-                                               " attende...");
-                            lock.wait();
-                        }
-                    } catch(Exception e) {
-                        e.printStackTrace();
-                    }
-                }*/
                 try {
                     Thread.sleep(this.smoke_time);
                 } catch(InterruptedException sleep_e) {
@@ -124,9 +124,19 @@ public class Smoker extends Thread {
                 //monitor.printListInfo(local_resource);
                 smoke();
                 n_smoke--;
+                //notifica al tabacchino che ha finito di fumare
+                synchronized(this.lock) {
+                    try {
+                        System.out.println("Smoker "+this.t_name+" notifica!");
+                        this.wait_smoker.set(true);
+                        lock.notifyAll();
+                    } catch(Exception e) {
+                        e.printStackTrace();
+                    }
+                }
             }
         }
-        System.out.println("\t\t\t\tFUMATORE "+this.t_name+" HA TERMINATO");
+        System.out.println("\t\t\t\t- - - FUMATORE "+this.t_name+" HA TERMINATO - - -");
     }
 
     //estrae risorse dai componenti privati per aggiungerli in quelli pubblici
@@ -187,21 +197,11 @@ public class Smoker extends Thread {
             }
             usable.setQuantity(usable_q - rand_extract);
         }
-        try {
+        /*try {
 	        System.out.println("Fumatore dorme per "+this.smoke_time+"ms");
             Thread.sleep(this.smoke_time);
         } catch(InterruptedException sleep_e) {
             sleep_e.printStackTrace();
-        }
-        //notifica al tabacchino che ha finito di fumare
-        /*synchronized(this.lock) {
-            try {
-                System.out.println("Smoker "+this.t_name+" notifica!");
-                this.wait_smoker.set(true);
-                lock.notify();
-            } catch(Exception e) {
-                e.printStackTrace();
-            }
         }*/
     }
 

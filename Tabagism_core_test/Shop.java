@@ -142,18 +142,18 @@ public class Shop extends Thread {
 
             //Dopo change_time passati, o dopo che un fumatore ha finito
             //di fumare, il tabacchino cambia le risorse disponibili e ripete
-            try {
+            /*try {
                 System.out.println("Shop "+this.t_name+" dorme per "+
                                    this.change_time+" ms");
                 Thread.sleep(this.change_time);
             } catch(InterruptedException sleep_e) {
                 sleep_e.printStackTrace();
-            }
+            }*/
             //Notifica a tutti i fumatori in attesa
-            /*synchronized(this.lock) {
+            synchronized(this.lock) {
                 try {
                     //prima attende che almeno un fumatore abbia finito
-                    while(this.wait_smoker.get()) {
+                    while(!this.wait_smoker.get()) {
                         this.lock.wait();
                         System.out.println("Shop "+this.t_name+" attende...");
                     }
@@ -163,7 +163,7 @@ public class Shop extends Thread {
                 } catch(Exception e) {
                     e.printStackTrace();
                 }
-            }*/
+            }
         }
     }
 
