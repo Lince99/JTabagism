@@ -26,7 +26,7 @@ public class Component {
         if(q <= 0)
             return;
         try {
-            mutex.acquire();
+            this.mutex.acquire();
             this.quantity = q;
         } catch(InterruptedException mutex_e) {
             mutex_e.printStackTrace();
@@ -39,7 +39,17 @@ public class Component {
     }
 
     public int getQuantity() {
-        return this.quantity;
+        int q = 0;
+
+        try {
+            this.mutex.acquire();
+            q = this.quantity;
+        } catch(InterruptedException mutex_e) {
+            mutex_e.printStackTrace();
+        }
+        mutex.release();
+        
+        return q;
     }
 
     public int decreaseQuantity(int times) {
@@ -47,11 +57,9 @@ public class Component {
 
         //critical section
         try {
-            mutex.acquire();
+            this.mutex.acquire();
             if(this.quantity != 0 && times <= this.quantity) {
-                //useless cycle to increment duration of the extraction
-                for(int i = 0; i < times; i++)
-                    this.quantity--;
+                this.quantity -= times;
                 //reduce the amount of shared quantity to local thread quantity
                 q = times;
             }
@@ -59,7 +67,7 @@ public class Component {
             //print mutex error
             mutex_e.printStackTrace();
         }
-        mutex.release();
+        this.mutex.release();
 
         return q;
     }
@@ -68,9 +76,7 @@ public class Component {
         //critical section
         try {
             mutex.acquire();
-                //useless cycle to increment duration of the operation
-                for(int i = 0; i < times; i++)
-                    this.quantity++;
+            this.quantity += times;
         } catch(InterruptedException mutex_e) {
             //print mutex error
             mutex_e.printStackTrace();

@@ -7,16 +7,15 @@ import java.util.Scanner;
 
 
 public class Shop extends Thread {
-
     private Random randgen;
     private Monitor monitor;
     private ArrayList<Component> public_resource;
     private ArrayList<Component> local_resource;
-    private Semaphore lock_risorse;
     private String t_name;
     private int change_time;
 
-    private AtomicBoolean wait_smoker;
+    private Semaphore lock_risorse;
+    private SharedVar wait_smoker;
     private Object lock;
 
     public Shop(ArrayList<Component> cmp, Semaphore s) {
@@ -27,8 +26,8 @@ public class Shop extends Thread {
         this.lock_risorse = s;
         this.t_name = "Shop";
         this.change_time = 1000;
-        //avvia il thread del tabacchino
-        new Thread(this, this.t_name).start();
+        this.wait_smoker = null;
+        this.lock = null;
     }
 
     public Shop(ArrayList<Component> cmp, String name, Semaphore s) {
@@ -39,8 +38,8 @@ public class Shop extends Thread {
         this.lock_risorse = s;
         this.t_name = name;
         this.change_time = 1000;
-        //avvia il thread del tabacchino
-        new Thread(this, this.t_name).start();
+        this.wait_smoker = null;
+        this.lock = null;
     }
 
     public Shop(ArrayList<Component> cmp, String name, Semaphore s, int time) {
@@ -51,23 +50,21 @@ public class Shop extends Thread {
         this.lock_risorse = s;
         this.t_name = name;
         this.change_time = time;
-        //avvia il thread del tabacchino
-        new Thread(this, this.t_name).start();
+        this.wait_smoker = null;
+        this.lock = null;
     }
 
-    public Shop(ArrayList<Component> cmp, String name, Semaphore s, int time,
-                AtomicBoolean wait, Object lock) {
+    public Shop(ArrayList<Component> cmp, String name, Semaphore s,
+                SharedVar wait, Object lock) {
         this.randgen = new Random();
         this.monitor = new Monitor();
         this.public_resource = cmp;
         this.local_resource = new ArrayList<Component>(cmp.size());
         this.lock_risorse = s;
         this.t_name = name;
-        this.change_time = time;
+        this.change_time = 1000;
         this.wait_smoker = wait;
         this.lock = lock;
-        //avvia il thread del tabacchino
-        new Thread(this, this.t_name).start();
     }
 
     public int getChange_time() {
@@ -79,7 +76,6 @@ public class Shop extends Thread {
             this.change_time = time;
     }
 
-    @Override
     public void run() {
         Scanner scan = new Scanner(System.in);
         int i = 0;
@@ -142,26 +138,33 @@ public class Shop extends Thread {
 
             //Dopo change_time passati, o dopo che un fumatore ha finito
             //di fumare, il tabacchino cambia le risorse disponibili e ripete
-            /*try {
-                System.out.println("Shop "+this.t_name+" dorme per "+
-                                   this.change_time+" ms");
-                Thread.sleep(this.change_time);
-            } catch(InterruptedException sleep_e) {
-                sleep_e.printStackTrace();
-            }*/
-            //Notifica a tutti i fumatori in attesa
-            synchronized(this.lock) {
+            if(this.lock == null) {
                 try {
+                    System.out.println("Shop "+this.t_name+" dorme per "+
+                                       this.change_time+" ms");
+                    Thread.sleep(this.change_time);
+                } catch(InterruptedException sleep_e) {
+                    sleep_e.printStackTrace();
+                }
+            }
+            else {
+                //Notifica a tutti i fumatori in attesa
+                synchronized(this.lock) {
                     //prima attende che almeno un fumatore abbia finito
-                    while(!this.wait_smoker.get()) {
-                        this.lock.wait();
-                        System.out.println("Shop "+this.t_name+" attende...");
+                    while(this.wait_smoker.get() == 0) {
+                        try {
+                            System.out.println("Shop "+this.t_name+
+                                               " attende...");
+                            this.lock.wait();
+                        } catch(InterruptedException wait_e) {
+                            wait_e.printStackTrace();
+                        }
                     }
-                    this.wait_smoker.set(false);
-                    System.out.println("Shop "+this.t_name+" notifica!");
-                    this.lock.notifyAll();
-                } catch(Exception e) {
-                    e.printStackTrace();
+                    if(this.wait_smoker.get() > 0) {
+                        this.wait_smoker.set(0);
+                        System.out.println("Shop "+this.t_name+" notifica!");
+                        this.lock.notifyAll();
+                    }
                 }
             }
         }

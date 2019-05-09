@@ -6,20 +6,19 @@ import java.util.Random;
 
 
 public class Smoker extends Thread {
-
     private Random randgen;
     private Monitor monitor = new Monitor();
     private ArrayList<Component> public_resource;
     private ArrayList<Component> local_resource;
     private ArrayList<Integer> local_need_q;
-    private Semaphore lock_risorse;
-    private int smoke_time; //tempo di fumata
     private int min_smoke_time;
     private int min_smoke_q;
+    private int smoke_time; //tempo di fumata
     private String t_name;
     private int n_smoke;
 
-    private AtomicBoolean wait_smoker;
+    private Semaphore lock_risorse;
+    private SharedVar wait_smoker;
     private Object lock;
 
     public Smoker(ArrayList<Component> res, String name, int t, Semaphore sem) {
@@ -27,22 +26,22 @@ public class Smoker extends Thread {
         this.public_resource = res;
         this.local_resource = new ArrayList<Component>(res.size());
         this.local_need_q = new ArrayList<Integer>();
-        for(int i = 0; i < res.size(); i++)
         this.lock_risorse = sem;
         this.min_smoke_time = 1000; //Minimo un secondo di fumata
         this.smoke_time = randgen.nextInt(t)+this.min_smoke_time;
         this.t_name = name;
+        this.wait_smoker = null;
+        this.lock = null;
         //avvia il thread del fumatore
         new Thread(this, this.t_name).start();
     }
 
-    public Smoker(ArrayList<Component> res, String name, int t, Semaphore sem,
-                  AtomicBoolean wait, Object lock) {
+    public Smoker(ArrayList<Component> res, String name, Semaphore sem, int t,
+                  SharedVar wait, Object lock) {
         this.randgen = new Random();
         this.public_resource = res;
         this.local_resource = new ArrayList<Component>(res.size());
         this.local_need_q = new ArrayList<Integer>();
-        for(int i = 0; i < res.size(); i++)
         this.lock_risorse = sem;
         this.min_smoke_time = 1000; //Minimo un secondo di fumata
         this.smoke_time = randgen.nextInt(t)+this.min_smoke_time;
@@ -53,23 +52,24 @@ public class Smoker extends Thread {
         new Thread(this, this.t_name).start();
     }
 
-    @Override
     public void run() {
         int i;
         boolean need_public = false;
         int n_smoke = 5;
 
         while(n_smoke > 0) {
-            //attende una notifica dal tabacchino
-            synchronized(this.lock) {
-                try {
-                    while(this.wait_smoker.get()) {
-                        System.out.println("Smoker "+this.t_name+
-                                            " attende...");
-                        lock.wait();
+            if(this.lock != null) {
+                //attende una notifica dal tabacchino
+                synchronized(this.lock) {
+                    while(this.wait_smoker.get() > 0) {
+                        try {
+                            System.out.println("Smoker "+this.t_name+
+                                               " attende...");
+                            lock.wait();
+                        } catch(InterruptedException wait_e) {
+                            wait_e.printStackTrace();
+                        }
                     }
-                } catch(Exception e) {
-                    e.printStackTrace();
                 }
             }
             //Il fumatore controlla le risorse locali per vedere se possiede
@@ -124,19 +124,28 @@ public class Smoker extends Thread {
                 //monitor.printListInfo(local_resource);
                 smoke();
                 n_smoke--;
-                //notifica al tabacchino che ha finito di fumare
-                synchronized(this.lock) {
-                    try {
-                        System.out.println("Smoker "+this.t_name+" notifica!");
-                        this.wait_smoker.set(true);
+                if(this.lock != null) {
+                    //notifica al tabacchino che ha finito di fumare
+                    synchronized(this.lock) {
+                        System.out.println("Smoker "+this.t_name+
+                                           " notifica!");
+                        this.wait_smoker.increase();
                         lock.notifyAll();
-                    } catch(Exception e) {
-                        e.printStackTrace();
+                    }
+                }
+                else {
+                    try {
+            	        System.out.println("Fumatore dorme per "+
+                                           this.smoke_time+"ms");
+                        Thread.sleep(this.smoke_time);
+                    } catch(InterruptedException sleep_e) {
+                        sleep_e.printStackTrace();
                     }
                 }
             }
         }
-        System.out.println("\t\t\t\t- - - FUMATORE "+this.t_name+" HA TERMINATO - - -");
+        System.out.println("\t\t\t\t- - - FUMATORE "+this.t_name+
+                           " HA TERMINATO - - -");
     }
 
     //estrae risorse dai componenti privati per aggiungerli in quelli pubblici
@@ -197,12 +206,6 @@ public class Smoker extends Thread {
             }
             usable.setQuantity(usable_q - rand_extract);
         }
-        /*try {
-	        System.out.println("Fumatore dorme per "+this.smoke_time+"ms");
-            Thread.sleep(this.smoke_time);
-        } catch(InterruptedException sleep_e) {
-            sleep_e.printStackTrace();
-        }*/
     }
 
     //se non ha tutte le risorse locali per fumare ritorna falso

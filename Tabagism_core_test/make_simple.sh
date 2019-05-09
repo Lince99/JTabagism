@@ -1,6 +1,5 @@
 #!/bin/sh
-#set -e
-#cd Tabagism_core
+clear && reset
 echo "Compiling Core..."
 javac *.java -Xlint:unchecked
 echo "Executing JTabagism..."
