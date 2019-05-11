@@ -19,7 +19,7 @@ public class Smoker extends Thread {
     private int n_smoke;
 
     private Semaphore lock_risorse;
-    private SharedVar wait_smoker;
+    private volatile SharedVar wait_smoker;
     private Object lock;
 
     public Smoker(String name, ArrayList<Component> res, Semaphore sem,
@@ -51,6 +51,8 @@ public class Smoker extends Thread {
         this.min_smoke_q = 1;
         this.max_smoke_q = 1;
         this.min_smoke_time = 1000; //Minimo un secondo di fumata
+        if(smoke_t <= 0)
+            smoke_t = this.min_smoke_time;
         this.smoke_time = randgen.nextInt(smoke_t)+this.min_smoke_time;
         this.t_name = name;
         this.n_smoke = n_smoke;
@@ -81,115 +83,81 @@ public class Smoker extends Thread {
     }
 
     public void run() {
-        int i;
+        int i = 0;
         boolean need_public = false;
+        int shared = 0;
 
         //continua finche' non ha finito tutte le fumate
         while(n_smoke > 0) {
-            //Il fumatore controlla le risorse locali per vedere se possiede
-            //quelle necessarie a fumare
-            if(this.local_resource.size() == 0) {
-                need_public = true;
+            shared = try_getSharedState(2);
+            //se il tabacchino invia il segnale di terminazione
+            //segnale KILL
+            if(shared == -1) {
+                this.monitor.printString("Uscita dello smoker "+this.t_name+"...");
+                return;
             }
-            for(i = 0; i < this.local_resource.size(); i++) {
-                if(this.local_resource.get(i).getQuantity() == 0) {
-                    System.out.println("Smoker "+this.t_name+" non ha "+
-                                       this.local_resource.get(i).getType());
-                    need_public = true;
-                    break;
-                }
-                else {
-                    System.out.println("Smoker "+this.t_name+" possiede "+i);
-                    need_public = false;
-                }
-            }
-            if(need_public) {
-                //Il fumatore attende che il tabacchino metta
-                //in vendita alcune risorse
-                if(this.lock != null) {
-                    synchronized(this.lock) {
-                        //se il tabacchino invia il segnale di terminazione
-                        if(this.wait_smoker.get() == -1) {
-                            System.out.println("Smoker "+this.t_name+
-                                               " TERMINATO CON -1!");
-                            return;
-                        }
-                        //il fumatore attende nel caso non ci siano stati cambi
-                        while(this.wait_smoker.get() > 0) {
-                            try {
-                                System.out.println("Smoker "+this.t_name+
-                                                   " attende... ("+
-                                                   this.wait_smoker.get()+")");
-                                lock.wait();
-                            } catch(InterruptedException wait_e) {
-                                wait_e.printStackTrace();
-                            }
-                        }
-                    }
-                }
-                try {
-                    this.lock_risorse.acquire();
-                    //occupa le risorse e ne sottrae la quantita' necessaria
-                    for(i = 0; i < this.public_resource.size(); i++)
-                        publicToLocal(i);
-                } catch(InterruptedException mutex_e) {
-                    mutex_e.printStackTrace();
-                }
-                this.lock_risorse.release();
-            }
-            //se ha tutte le risorse per fumare
-            else if(hasAllLocal()) {
+            //se il fumatore ha tutte le risorse necessarie a fumare lo fa
+            if(hasAllLocal()) {
                 //Fuma per tot tempo
-                System.out.println("\n- - - - - - - - - - - - - - - - - - - "+
+                this.monitor.printString("\n- - - - - - - - - - - - - - - - - - - "+
                                    "- - - - - - - - - - - - - - - - - - - - ");
-                System.out.println("SMOKER "+this.t_name+" FUMA PER "+
+                this.monitor.printString("SMOKER "+this.t_name+" FUMA PER "+
                                    this.smoke_time+" MS");
-                System.out.println("\n- - - - - - - - - - - - - - - - - - - "+
+                this.monitor.printString("- - - - - - - - - - - - - - - - - - - "+
                                    "- - - - - - - - - - - - - - - - - - - - ");
                 smoke();
                 n_smoke--;
-                if(this.lock != null) {
-                    //notifica al tabacchino che ha finito di fumare
-                    synchronized(this.lock) {
-                        if(this.wait_smoker.get() >= 0) {
-                            System.out.println("Smoker "+this.t_name+
-                                               " notifica! ("+
-                                               this.wait_smoker.get()+")");
-                            this.wait_smoker.set(1);
-                            this.lock.notifyAll();
-                        }
-                    }
+            }
+            else {
+                //Il fumatore attende che il tabacchino venda risorse
+                //segnale END (attende per altri segnali)
+                shared = try_getSharedState(2);
+                //segnale KILL
+                if(getSharedState() == -1) {
+                    this.monitor.printString("Uscita dello smoker "+
+                                             this.t_name);
+                    return;
                 }
-                try {
-                    System.out.println("Fumatore "+this.t_name+
-                                       " dorme per "+this.smoke_time+"ms");
-                    Thread.sleep(this.smoke_time);
-                } catch(InterruptedException sleep_e) {
-                    sleep_e.printStackTrace();
+                if(shared != 1) {
+                    this.monitor.printString("SMOKER "+this.t_name+
+                                       " VEDE: "+getSharedState());
+                    this.monitor.printInfo("smoker "+this.t_name,
+                                           this.local_resource);
+                }
+                //segnali ACK e CHANGE
+                if(shared == 0 || shared == 1) {
+                    //occupa le risorse e ne sottrae la quantita' necessaria
+                    try {
+                        this.lock_risorse.acquire();
+                        for(i = 0; i < this.public_resource.size(); i++)
+                            publicToLocal(i);
+                    } catch(InterruptedException mutex_e) {
+                        mutex_e.printStackTrace();
+                    }
+                    this.lock_risorse.release();
+                    //se non possiede tutte le risorse lo notifica
+                    if(!hasAllLocal()) {
+                        if(getSharedState() == -1) {
+                            this.monitor.printString("Uscita dello smoker "+
+                                                     this.t_name);
+                            return;
+                        }
+                        try_setSharedState(1, 2);
+                    }
                 }
             }
         }
-        System.out.println("\t\t\t\t- - - FUMATORE "+this.t_name+
-                           " HA TERMINATO - - -");
-        if(this.lock != null) {
-            //notifica al tabacchino che ha finito di fumare
-            synchronized(this.lock) {
-                if(this.wait_smoker.get() >= 0) {
-                    System.out.println("Smoker "+this.t_name+
-                                       " notifica terminazione! ("+
-                                       this.wait_smoker.get()+")");
-                    while(this.wait_smoker.get() == 2) {
-                        try {
-                            this.lock.wait();
-                        } catch(InterruptedException sleep_e) {
-                            sleep_e.printStackTrace();
-                        }
-                    }
-                    this.wait_smoker.set(2);
-                    this.lock.notifyAll();
-                }
-            }
-        }
+
+        //TODO USANDO GETSHARED FUNZIONA, senza VA IN STARVATION
+        this.monitor.printString("\t\t\t\t- - - FUMATORE\t"+this.t_name+
+                           "\tHA TERMINATO ("+getSharedState()+")- - -");
+        //notifica al tabacchino che ha finito di fumare
+        //segnale END
+        this.monitor.printString("Smoker "+this.t_name+
+                                 " legge "+getSharedState());
+        try_setSharedState(2, 2);
+        this.monitor.printString("Smoker "+this.t_name+
+                                 " notifica terminazione!");
     }
 
     //estrae risorse dai componenti privati per aggiungerli in quelli pubblici
@@ -253,6 +221,12 @@ public class Smoker extends Thread {
             }
             usable.setQuantity(usable_q - rand_extract);
         }
+        //fuma per tot tempo
+        try {
+            Thread.sleep(this.smoke_time);
+        } catch(InterruptedException sleep_e) {
+            sleep_e.printStackTrace();
+        }
     }
 
     //se non ha tutte le risorse locali per fumare ritorna falso
@@ -269,5 +243,65 @@ public class Smoker extends Thread {
 
         //se ha tutto ritorna vero
         return true;
+    }
+
+    private void setSharedState(int val) {
+        synchronized(this.lock) {
+            this.wait_smoker.set(val);
+            this.lock.notifyAll();
+        }
+    }
+
+    private void try_setSharedState(int val, int not_overwrite) {
+        boolean done;
+
+        do {
+            done = false;
+            synchronized(this.lock) {
+                if(this.wait_smoker.get() != not_overwrite) {
+                    this.wait_smoker.set(val);
+                    this.lock.notifyAll();
+                    done = true;
+                }
+                else {
+                    try {
+                        this.lock.wait();
+                    } catch(InterruptedException wait_e) {
+                        wait_e.printStackTrace();
+                    }
+                }
+            }
+        } while(!done);
+    }
+
+    private int try_getSharedState(int not_overwrite) {
+        int val = -1;
+
+        do {
+            synchronized(this.lock) {
+                val = this.wait_smoker.get();
+                if(this.wait_smoker.get() != not_overwrite)
+                    return val;
+                else {
+                    try {
+                        this.lock.wait();
+                    } catch(InterruptedException wait_e) {
+                        wait_e.printStackTrace();
+                    }
+                }
+            }
+        } while(val == not_overwrite);
+
+        return -1;
+    }
+
+    private int getSharedState() {
+        int val = 0;
+
+        synchronized(this.lock) {
+            val = this.wait_smoker.get();
+        }
+
+        return val;
     }
 }

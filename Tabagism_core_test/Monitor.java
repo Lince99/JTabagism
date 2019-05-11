@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-//import java.util.concurrent.Semaphore; //TODO IMPLEMENT CONCURRENT PRINT
 
 
 
@@ -27,8 +26,12 @@ public class Monitor {
         this.max_size.set(pos, val);
     }
 
+    public synchronized void printString(String str) {
+        System.out.println(str);
+    }
+
     //stampa formattata con delle barre orizzontali per indicare la quantita'
-    public void printInfo(String name, ArrayList<Component> arr) {
+    public synchronized void printInfo(String name, ArrayList<Component> arr) {
         int size = arr.size();
         int j;
         int i;
@@ -77,15 +80,10 @@ public class Monitor {
             }
             System.out.print("|\t"+curr_q+"\n");
         }
-        try {
-            Thread.sleep(100);
-        } catch(InterruptedException sleep_e) {
-            sleep_e.printStackTrace();
-        }
     }
 
     //stampa la lista dei componenti e i corrispettivi valori
-    public void printListInfo(ArrayList<Component> arr) {
+    public synchronized void printListInfo(ArrayList<Component> arr) {
         int size = arr.size();
 
         System.out.print("["+size+"] = ");
