@@ -22,8 +22,8 @@ public class Smoker extends Thread {
     private SharedVar wait_smoker;
     private Object lock;
 
-    public Smoker(ArrayList<Component> res, Monitor monitor,
-                  String name, int t, int n_smoke, Semaphore sem) {
+    public Smoker(String name, ArrayList<Component> res, Semaphore sem,
+                  Monitor monitor, int smoke_t, int n_smoke) {
         this.monitor = monitor;
         this.public_resource = res;
         this.local_resource = new ArrayList<Component>(res.size());
@@ -31,9 +31,9 @@ public class Smoker extends Thread {
         this.min_smoke_q = 1;
         this.max_smoke_q = 1;
         this.min_smoke_time = 1000; //Minimo un secondo di fumata
-        if(t <= 0)
-            t = this.min_smoke_time;
-        this.smoke_time = randgen.nextInt(t)+this.min_smoke_time;
+        if(smoke_t <= 0)
+            smoke_t = this.min_smoke_time;
+        this.smoke_time = randgen.nextInt(smoke_t)+this.min_smoke_time;
         this.t_name = name;
         this.n_smoke = n_smoke;
         this.lock_risorse = sem;
@@ -41,8 +41,8 @@ public class Smoker extends Thread {
         this.lock = null;
     }
 
-    public Smoker(ArrayList<Component> res, Monitor monitor,
-                  String name, Semaphore sem, int t, int n_smoke,
+    public Smoker(String name, ArrayList<Component> res, Semaphore sem,
+                  Monitor monitor, int smoke_t, int n_smoke,
                   SharedVar wait, Object lock) {
         this.monitor = monitor;
         this.public_resource = res;
@@ -51,7 +51,7 @@ public class Smoker extends Thread {
         this.min_smoke_q = 1;
         this.max_smoke_q = 1;
         this.min_smoke_time = 1000; //Minimo un secondo di fumata
-        this.smoke_time = randgen.nextInt(t)+this.min_smoke_time;
+        this.smoke_time = randgen.nextInt(smoke_t)+this.min_smoke_time;
         this.t_name = name;
         this.n_smoke = n_smoke;
         this.lock_risorse = sem;
@@ -84,21 +84,8 @@ public class Smoker extends Thread {
         int i;
         boolean need_public = false;
 
+        //continua finche' non ha finito tutte le fumate
         while(n_smoke > 0) {
-            if(this.lock != null) {
-                //attende una notifica dal tabacchino
-                synchronized(this.lock) {
-                    while(this.wait_smoker.get() > 0) {
-                        try {
-                            //System.out.println("Smoker "+this.t_name+
-                            //                   " attende...");
-                            lock.wait();
-                        } catch(InterruptedException wait_e) {
-                            wait_e.printStackTrace();
-                        }
-                    }
-                }
-            }
             //Il fumatore controlla le risorse locali per vedere se possiede
             //quelle necessarie a fumare
             if(this.local_resource.size() == 0) {
@@ -106,19 +93,40 @@ public class Smoker extends Thread {
             }
             for(i = 0; i < this.local_resource.size(); i++) {
                 if(this.local_resource.get(i).getQuantity() == 0) {
-                    //System.out.println("Smoker "+this.t_name+" non ha "+
-                    //                   this.local_resource.get(i).getType());
+                    System.out.println("Smoker "+this.t_name+" non ha "+
+                                       this.local_resource.get(i).getType());
                     need_public = true;
                     break;
                 }
                 else {
-                    //System.out.println("Smoker "+this.t_name+" possiede "+i);
+                    System.out.println("Smoker "+this.t_name+" possiede "+i);
                     need_public = false;
                 }
             }
             if(need_public) {
                 //Il fumatore attende che il tabacchino metta
-                //in vendita le risorse
+                //in vendita alcune risorse
+                if(this.lock != null) {
+                    synchronized(this.lock) {
+                        //se il tabacchino invia il segnale di terminazione
+                        if(this.wait_smoker.get() == -1) {
+                            System.out.println("Smoker "+this.t_name+
+                                               " TERMINATO CON -1!");
+                            return;
+                        }
+                        //il fumatore attende nel caso non ci siano stati cambi
+                        while(this.wait_smoker.get() > 0) {
+                            try {
+                                System.out.println("Smoker "+this.t_name+
+                                                   " attende... ("+
+                                                   this.wait_smoker.get()+")");
+                                lock.wait();
+                            } catch(InterruptedException wait_e) {
+                                wait_e.printStackTrace();
+                            }
+                        }
+                    }
+                }
                 try {
                     this.lock_risorse.acquire();
                     //occupa le risorse e ne sottrae la quantita' necessaria
@@ -143,15 +151,18 @@ public class Smoker extends Thread {
                 if(this.lock != null) {
                     //notifica al tabacchino che ha finito di fumare
                     synchronized(this.lock) {
-                        System.out.println("Smoker "+this.t_name+
-                                           " notifica!");
-                        this.wait_smoker.increase();
-                        lock.notifyAll();
+                        if(this.wait_smoker.get() >= 0) {
+                            System.out.println("Smoker "+this.t_name+
+                                               " notifica! ("+
+                                               this.wait_smoker.get()+")");
+                            this.wait_smoker.set(1);
+                            this.lock.notifyAll();
+                        }
                     }
                 }
                 try {
-                    System.out.println("Fumatore "+this.t_name+" dorme per "+
-                                       this.smoke_time+"ms");
+                    System.out.println("Fumatore "+this.t_name+
+                                       " dorme per "+this.smoke_time+"ms");
                     Thread.sleep(this.smoke_time);
                 } catch(InterruptedException sleep_e) {
                     sleep_e.printStackTrace();
@@ -160,6 +171,25 @@ public class Smoker extends Thread {
         }
         System.out.println("\t\t\t\t- - - FUMATORE "+this.t_name+
                            " HA TERMINATO - - -");
+        if(this.lock != null) {
+            //notifica al tabacchino che ha finito di fumare
+            synchronized(this.lock) {
+                if(this.wait_smoker.get() >= 0) {
+                    System.out.println("Smoker "+this.t_name+
+                                       " notifica terminazione! ("+
+                                       this.wait_smoker.get()+")");
+                    while(this.wait_smoker.get() == 2) {
+                        try {
+                            this.lock.wait();
+                        } catch(InterruptedException sleep_e) {
+                            sleep_e.printStackTrace();
+                        }
+                    }
+                    this.wait_smoker.set(2);
+                    this.lock.notifyAll();
+                }
+            }
+        }
     }
 
     //estrae risorse dai componenti privati per aggiungerli in quelli pubblici
@@ -216,8 +246,9 @@ public class Smoker extends Thread {
                 if(this.max_smoke_q == this.min_smoke_q)
                     rand_extract = this.max_smoke_q;
                 else {
-                    rand_extract = this.randgen.nextInt(this.max_smoke_q -
-                                   this.min_smoke_q) + this.min_smoke_q;
+                    rand_extract = this.randgen.nextInt(this.max_smoke_q-
+                                                        this.min_smoke_q)+
+                                   this.min_smoke_q;
                 }
             }
             usable.setQuantity(usable_q - rand_extract);

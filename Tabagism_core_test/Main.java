@@ -15,7 +15,6 @@ public class Main {
         //utility
         Scanner scan = new Scanner(System.in);
         Monitor monitor;
-        boolean created = false;
         //smoker
         ArrayList<Thread> t_fmt;
         ArrayList<Smoker> fumatori;
@@ -63,12 +62,11 @@ public class Main {
 
         //Crea il thread del tabacchino
         System.out.println("- - - Creazione tabacchino... - - -");
-        tabacchino = new Shop(risorse, monitor, "tbc", lock_risorse,
-                              check_q_tbc, sync_shop_smoker, lock_sync);
-        if(check_q_tbc == 0)
-            tabacchino.setMax_round(250);
-        else
-            tabacchino.setMax_round(100);
+        tabacchino = new Shop("tbc", risorse, lock_risorse,
+                              monitor, sync_shop_smoker, lock_sync);
+        tabacchino.setChange_time(check_q_tbc);
+        //imposta la fine del tabacchino
+        tabacchino.setMax_round(n_fumatori);
         //crea il thread del tabacchino
         t_tbc = new Thread(tabacchino, "tbc");
         //avvia il thread del tabacchino
@@ -79,26 +77,13 @@ public class Main {
         t_fmt = new ArrayList<Thread>();
         for(int i = 0; i < n_fumatori; i++) {
             System.out.println("- - - Creazione fumatore "+i+"... - - -");
-            fumatori.add(new Smoker(risorse, monitor, "smc#"+i,
-                                    lock_risorse, max_smoke_time, n_smoke,
+            fumatori.add(new Smoker("smc#"+i, risorse, lock_risorse, monitor,
+                                    max_smoke_time, n_smoke,
                                     sync_shop_smoker, lock_sync));
             //crea i thread dei fumatori
             t_fmt.add(new Thread(fumatori.get(i), "smc#"+i));
-            do {
-                try {
-                    //avvia i thread dei fumatori
-                    t_fmt.get(i).start();
-                    created = true;
-                } catch(OutOfMemoryError out_e) {
-                    System.out.println("Errore nell'avvio del thread!");
-                    created = false;
-                    try {
-                        Thread.sleep(1000);
-                    } catch(InterruptedException sleep_e) {
-                        sleep_e.printStackTrace();
-                    }
-                }
-            } while(created == false);
+            //avvia i thread dei fumatori
+            t_fmt.get(i).start();
         }
     }
 }
