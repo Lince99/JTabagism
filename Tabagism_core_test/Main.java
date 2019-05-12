@@ -77,6 +77,7 @@ public class Main {
             System.out.println("Quanti accendini vuoi creare?");
             quantity.add(scan.nextInt());
         }
+        monitor = new Monitor(quantity);
         if(args.length > 4)
                 check_q_tbc = strToInt(args[4]);
         else {
@@ -104,10 +105,16 @@ public class Main {
             System.out.println("Quanti secondi fumano al massimo?");
             max_smoke_time = scan.nextInt()*1000;
         }
+        if(args.length > 8)
+            monitor.setWait_time(strToInt(args[8]));
+        else {
+            System.out.println("Quanti millisecondi aspettano per stampare?");
+            monitor.setWait_time(scan.nextInt());
+        }
 
         //Crea le risorse per i fumatori e il tabacchino
         risorse = new ArrayList<Component>();
-        monitor = new Monitor(quantity);
+
         risorse.add(new Component("Tabacco  ", quantity.get(0)));
         risorse.add(new Component("Cartina  ", quantity.get(1)));
         risorse.add(new Component("Filtro   ", quantity.get(2)));
@@ -135,9 +142,10 @@ public class Main {
                                     sync_shop_smoker, lock_sync));
             //crea i thread dei fumatori
             t_fmt.add(new Thread(fumatori.get(i), "smc#"+i));
-            //avvia i thread dei fumatori
-            t_fmt.get(i).start();
         }
+        //avvia i thread dei fumatori
+        for(int i = 0; i < n_fumatori; i++)
+            t_fmt.get(i).start();
     }
 
     private static int strToInt(String str) {

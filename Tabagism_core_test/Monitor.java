@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class Monitor {
     private ArrayList<Integer> max_size;
     private int sector_max;
+    private int wait_time;
 
     public Monitor(ArrayList<Integer> max_size) {
         this.max_size = max_size;
@@ -26,12 +27,19 @@ public class Monitor {
         this.max_size.set(pos, val);
     }
 
+    public int getWait_time() {
+        return this.wait_time;
+    }
+    public void setWait_time(int time) {
+        this.wait_time = time;
+    }
+
     public synchronized void printString(String str) {
         System.out.println(str);
     }
 
     //stampa formattata con delle barre orizzontali per indicare la quantita'
-    public synchronized void printInfo(String name, ArrayList<Component> arr) {
+    public void printInfo(String name, ArrayList<Component> arr) {
         int size = arr.size();
         int j;
         int i;
@@ -52,6 +60,15 @@ public class Monitor {
         if(size == 0) {
             System.out.println("\tnull");
             return;
+        }
+        System.out.flush();
+        //rende la stampa leggibile
+        if(this.wait_time > 0) {
+            try {
+                Thread.sleep((int)(this.wait_time/2));
+            } catch(InterruptedException sleep_e) {
+                sleep_e.printStackTrace();
+            }
         }
         for(i = 0; i < size; i++) {
             System.out.print("\t"+arr.get(i).getType()+"=\t|");
@@ -79,11 +96,20 @@ public class Monitor {
                 }
             }
             System.out.print("|\t"+curr_q+"\n");
+            System.out.flush();
+        }
+        //rende la stampa leggibile
+        if(this.wait_time > 0) {
+            try {
+                Thread.sleep((int)(this.wait_time/2));
+            } catch(InterruptedException sleep_e) {
+                sleep_e.printStackTrace();
+            }
         }
     }
 
     //stampa la lista dei componenti e i corrispettivi valori
-    public synchronized void printListInfo(ArrayList<Component> arr) {
+    public void printListInfo(ArrayList<Component> arr) {
         int size = arr.size();
 
         System.out.print("["+size+"] = ");
@@ -98,5 +124,6 @@ public class Monitor {
             else
                 System.out.print(", ");
         }
+        System.out.flush();
     }
 }

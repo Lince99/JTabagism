@@ -93,18 +93,21 @@ public class Smoker extends Thread {
             //se il tabacchino invia il segnale di terminazione
             //segnale KILL
             if(shared == -1) {
-                this.monitor.printString("Uscita dello smoker "+this.t_name+"...");
+                this.monitor.printString("Uscita dello smoker "+
+                                         this.t_name+"...");
                 return;
             }
             //se il fumatore ha tutte le risorse necessarie a fumare lo fa
             if(hasAllLocal()) {
                 //Fuma per tot tempo
-                this.monitor.printString("\n- - - - - - - - - - - - - - - - - - - "+
-                                   "- - - - - - - - - - - - - - - - - - - - ");
+                this.monitor.printString("\n- - - - - - - - - - - - - - - - - "+
+                                         "- - - - - - - - - - - - - - - - -");
                 this.monitor.printString("SMOKER "+this.t_name+" FUMA PER "+
                                    this.smoke_time+" MS");
-                this.monitor.printString("- - - - - - - - - - - - - - - - - - - "+
-                                   "- - - - - - - - - - - - - - - - - - - - ");
+                this.monitor.printString("- - - - - - - - - - - - - - - - - "+
+                                         "- - - - - - - - - - - - - - - - -");
+                //this.monitor.printInfo("Smoker "+this.t_name,
+                //                       this.local_resource);
                 smoke();
                 n_smoke--;
             }
@@ -118,12 +121,10 @@ public class Smoker extends Thread {
                                              this.t_name);
                     return;
                 }
-                if(shared != 1) {
-                    this.monitor.printString("SMOKER "+this.t_name+
-                                       " VEDE: "+getSharedState());
-                    this.monitor.printInfo("smoker "+this.t_name,
-                                           this.local_resource);
-                }
+                this.monitor.printString("SMOKER "+this.t_name+
+                                         " VEDE: "+shared);
+                //this.monitor.printInfo("smoker "+this.t_name,
+                //                       this.local_resource);
                 //segnali ACK e CHANGE
                 if(shared == 0 || shared == 1) {
                     //occupa le risorse e ne sottrae la quantita' necessaria
@@ -264,7 +265,9 @@ public class Smoker extends Thread {
                     done = true;
                 }
                 else {
+                    this.lock.notifyAll();
                     try {
+                        this.monitor.printString("Smoker "+this.t_name+" va in attesa... ("+this.wait_smoker.get()+")");
                         this.lock.wait();
                     } catch(InterruptedException wait_e) {
                         wait_e.printStackTrace();

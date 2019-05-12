@@ -81,45 +81,58 @@ public class Shop extends Thread {
         int round = 0; //numero di fumatori che hanno terminato
         int shared = 0;
 
-        //aggiunge un ritardo per non esagerare con i check
-        if(this.change_time == 0)
-            this.change_time = 100;
-
         //il tabacchino continua finchè tutti i fumatori non hanno finito
         while(round < this.max_round) {
-            //Notifica a tutti i fumatori in attesa
-            shared = getSharedState();
             //segnale KILL
-            if(shared == -1) {
+            if(getSharedState() == -1) {
                 this.monitor.printString("Uscita dello shop "+this.t_name);
                 return;
             }
             //nessun fumatore ha modificato la variabile condivisa
             //segnale ACK
-            else if(shared == 0) {
+            else if(getSharedState() == 0) {
                 this.monitor.printString("Shop "+this.t_name+
-                                   " attende modifiche per "+
-                                   this.change_time+" ms"+"\t("+round+")");
-                synchronized(this.lock) {
+                                   " attende modifiche dai fumatori..."+
+                                   "\t("+round+")");
+                //sincronizzazione con monitor
+                if(this.change_time == 0) {
+                    synchronized(this.lock) {
+                        if(this.wait_smoker.get() == 2) {
+                            round++;
+                            //emette segnale ACK
+                            this.monitor.printString(this.t_name+
+                                               ": Un fumatore ha finito!");
+                            setSharedState(0);
+                        }
+                        else {
+                            try {
+                                this.monitor.printString("Shop "+this.t_name+" va in attesa... ("+this.wait_smoker.get()+")");
+                                this.lock.wait();
+                            } catch(InterruptedException sleep_e) {
+                                sleep_e.printStackTrace();
+                            }
+                        }
+                    }
+                }
+                //nessuna sincronizzazione, attende change_time millisecondi
+                else {
+                    this.monitor.printString("Shop "+this.t_name+
+                                       " attende modifiche per "+
+                                       this.change_time+" ms"+"\t("+round+")");
                     try {
-                        this.lock.wait();
+                        Thread.sleep(this.change_time);
                     } catch(InterruptedException sleep_e) {
                         sleep_e.printStackTrace();
                     }
                 }
-                /*try {
-                    Thread.sleep(this.change_time);
-                } catch(InterruptedException sleep_e) {
-                    sleep_e.printStackTrace();
-                }*/
             }
             //almeno un fumatore ha notificato la necessita' di cambio
             //segnale CHANGE
-            else if(shared == 1) {
+            else if(getSharedState() == 1) {
                 //emette segnale ACK
                 if(changeResources(round)) {
                     this.monitor.printString("Shop "+this.t_name+" notifica!");
-                    setSharedState(0);
+                    try_setSharedState(0, 2);
                 }
                 //emette segnale KILL
                 else {
@@ -137,6 +150,7 @@ public class Shop extends Thread {
                 setSharedState(0);
             }
         }
+        this.monitor.printString("\nShop "+this.t_name+" HA TERMINATO!\n");
     }
 
     //azione principale del tabacchino
@@ -164,6 +178,7 @@ public class Shop extends Thread {
                             //emette segnale ACK
                             this.monitor.printString(this.t_name+
                                                ": Un fumatore ha finito!");
+                            setSharedState(0);
                         }
                         setSharedState(1);
                         //Se una risorsa e' terminata lo notifica al monitor
@@ -188,9 +203,9 @@ public class Shop extends Thread {
                 }
             }
             if(round <= 1 && getSharedState() == 1) {
-                this.monitor.printInfo(this.t_name+" local (PUBLIC to LOCAL)",
-                                  this.local_resource);
-                System.out.print("\n");
+                //this.monitor.printInfo(this.t_name+" local (PUBLIC to LOCAL)",
+                //                  this.local_resource);
+                //System.out.print("\n");
             }
 
             //Poi ne mette a disposizione solo alcune in quantita' limitate
@@ -209,10 +224,10 @@ public class Shop extends Thread {
                 localToPublic(i);
             }
             if(round <= 1 && getSharedState() == 1) {
-                this.monitor.printInfo(this.t_name+" local (LOCAL to PUBLIC)",
-                                  this.local_resource);
-                this.monitor.printInfo(this.t_name+" PUBLIC",
-                                  this.public_resource);
+                //this.monitor.printInfo(this.t_name+" local (LOCAL to PUBLIC)",
+                //                  this.local_resource);
+                //this.monitor.printInfo(this.t_name+" PUBLIC",
+                //                  this.public_resource);
             }
             System.out.print("\n");
         } catch(InterruptedException lock_e) {
@@ -294,6 +309,7 @@ public class Shop extends Thread {
                     done = true;
                 }
                 else {
+                    this.lock.notifyAll();
                     try {
                         this.lock.wait();
                     } catch(InterruptedException wait_e) {
@@ -314,6 +330,7 @@ public class Shop extends Thread {
                     return val;
                 else {
                     try {
+                        this.monitor.printString("Shop "+this.t_name+" va in attesa... ("+this.wait_smoker.get()+")");
                         this.lock.wait();
                     } catch(InterruptedException wait_e) {
                         wait_e.printStackTrace();
