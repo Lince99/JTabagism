@@ -121,7 +121,7 @@ public class Main {
         risorse.add(new Component("Accendino", quantity.get(3)));
 
         //Crea il thread del tabacchino
-        monitor.printString("- - - Creazione tabacchino... - - -");
+        System.out.println("- - - Creazione tabacchino... - - -");
         tabacchino = new Shop("tbc", risorse, lock_risorse,
                               monitor, sync_shop_smoker, lock_sync);
         tabacchino.setChange_time(check_q_tbc);
@@ -136,7 +136,7 @@ public class Main {
         fumatori = new ArrayList<Smoker>();
         t_fmt = new ArrayList<Thread>();
         for(int i = 0; i < n_fumatori; i++) {
-            monitor.printString("- - - Creazione fumatore "+i+"... - - -");
+            System.out.println("- - - Creazione fumatore "+i+"... - - -");
             fumatori.add(new Smoker("smc#"+i, risorse, lock_risorse, monitor,
                                     max_smoke_time, n_smoke,
                                     sync_shop_smoker, lock_sync));

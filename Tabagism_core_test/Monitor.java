@@ -34,7 +34,7 @@ public class Monitor {
         this.wait_time = time;
     }
 
-    public synchronized void printString(String str) {
+    public void printString(String str) {
         System.out.println(str);
     }
 

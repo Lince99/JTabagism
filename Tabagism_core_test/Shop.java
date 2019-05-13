@@ -83,20 +83,20 @@ public class Shop extends Thread {
 
         //il tabacchino continua finchè tutti i fumatori non hanno finito
         while(round < this.max_round) {
-            //segnale KILL
-            if(getSharedState() == -1) {
-                this.monitor.printString("Uscita dello shop "+this.t_name);
-                return;
-            }
-            //nessun fumatore ha modificato la variabile condivisa
-            //segnale ACK
-            else if(getSharedState() == 0) {
-                this.monitor.printString("Shop "+this.t_name+
-                                   " attende modifiche dai fumatori..."+
-                                   "\t("+round+")");
-                //sincronizzazione con monitor
-                if(this.change_time == 0) {
-                    synchronized(this.lock) {
+            synchronized(this.lock) {
+                //segnale KILL
+                if(getSharedState() == -1) {
+                    this.monitor.printString("Uscita dello shop "+this.t_name);
+                    return;
+                }
+                //nessun fumatore ha modificato la variabile condivisa
+                //segnale ACK
+                else if(getSharedState() == 0) {
+                    this.monitor.printString("Shop "+this.t_name+
+                                       " attende modifiche dai fumatori..."+
+                                       "\t("+round+")");
+                    //sincronizzazione con monitor
+                    if(this.change_time == 0) {
                         if(this.wait_smoker.get() == 2) {
                             round++;
                             //emette segnale ACK
@@ -113,41 +113,41 @@ public class Shop extends Thread {
                             }
                         }
                     }
-                }
-                //nessuna sincronizzazione, attende change_time millisecondi
-                else {
-                    this.monitor.printString("Shop "+this.t_name+
-                                       " attende modifiche per "+
-                                       this.change_time+" ms"+"\t("+round+")");
-                    try {
-                        Thread.sleep(this.change_time);
-                    } catch(InterruptedException sleep_e) {
-                        sleep_e.printStackTrace();
+                    //nessuna sincronizzazione, attende change_time millisecondi
+                    else {
+                        this.monitor.printString("Shop "+this.t_name+
+                                           " attende modifiche per "+
+                                           this.change_time+" ms"+"\t("+round+")");
+                        try {
+                            Thread.sleep(this.change_time);
+                        } catch(InterruptedException sleep_e) {
+                            sleep_e.printStackTrace();
+                        }
                     }
                 }
-            }
-            //almeno un fumatore ha notificato la necessita' di cambio
-            //segnale CHANGE
-            else if(getSharedState() == 1) {
-                //emette segnale ACK
-                if(changeResources(round)) {
-                    this.monitor.printString("Shop "+this.t_name+" notifica!");
-                    try_setSharedState(0, 2);
+                //almeno un fumatore ha notificato la necessita' di cambio
+                //segnale CHANGE
+                else if(getSharedState() == 1) {
+                    //emette segnale ACK
+                    if(changeResources(round)) {
+                        this.monitor.printString("Shop "+this.t_name+" notifica!");
+                        try_setSharedState(0, 2);
+                    }
+                    //emette segnale KILL
+                    else {
+                        this.monitor.printString("Shop "+this.t_name+
+                                           " TERMINA I FUMATORI!");
+                    }
                 }
-                //emette segnale KILL
-                else {
-                    this.monitor.printString("Shop "+this.t_name+
-                                       " TERMINA I FUMATORI!");
+                //un fumatore ha terminato di fumare
+                //segnale END
+                else if(shared == 2) {
+                    round++;
+                    //emette segnale ACK
+                    this.monitor.printString(this.t_name+
+                                       ": Un fumatore ha finito!");
+                    setSharedState(0);
                 }
-            }
-            //un fumatore ha terminato di fumare
-            //segnale END
-            else if(shared == 2) {
-                round++;
-                //emette segnale ACK
-                this.monitor.printString(this.t_name+
-                                   ": Un fumatore ha finito!");
-                setSharedState(0);
             }
         }
         this.monitor.printString("\nShop "+this.t_name+" HA TERMINATO!\n");
